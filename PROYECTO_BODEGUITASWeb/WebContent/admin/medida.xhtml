@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head></h:head> 
+<body onload="#{beanMedida.inicializar()}"> 
+	<p:growl>
+		<p:autoUpdate></p:autoUpdate>
+	</p:growl>
+<p:panel header="Crud">
+	<h:form id="form">
+	<p:commandButton icon="fa fa-plus-square" style="margin-right: 90%;"
+										value="  Nuevo" update="formCrear" action="#{beanMedida.limpiarMedida()}"
+										title="Nueva Medida" oncomplete="PF('dlgCrear').show();">
+	</p:commandButton>
+	<br />
+	<br />
+	 <p:dataTable value="#{beanMedida.listaMedida}" var="m">
+	 	<p:column headerText="Tipo medida">
+	 		<h:outputText value="#{m.tipoMedida}" />
+	 	</p:column>
+	  
+	 	<p:column headerText="Opciones">
+	 	<p:commandButton icon="fa fa-edit" update=":formEditar" title="Editar" actionListener="#{beanMedida.actionListenerCargarMedida(m)}"
+	 	oncomplete="PF('dlgEditar').show();"
+	 	>
+	 	</p:commandButton>
+	 	
+	 	<p:commandButton update="form" icon="fa fa-trash"  title="Eliminar" actionListener="#{beanMedida.actionListenerEliminarMedida(m.idMedida)}">
+	 	<p:confirm header="Confirmación" message="¿Desea eliminar?"
+			icon="fa fa-info"></p:confirm>
+	 	</p:commandButton>
+	 	 </p:column>
+	 </p:dataTable>
+	
+	</h:form>
+
+</p:panel>
+
+<p:dialog header="Crear Medida" widgetVar="dlgCrear">
+	<h:form id="formCrear">
+	<p:growl>
+			<p:autoUpdate />
+	</p:growl>
+
+	<p:panelGrid columns="2">
+		<h:outputText value="Tipo de Medida" />
+			<p:inputText value="#{beanMedida.medida.tipoMedida}"
+				requiredMessage="El tipo de medida es requerida"
+				required="true">
+			
+			</p:inputText>
+			
+	</p:panelGrid>
+		<br />
+			<p:commandButton value="Crear" update="form"
+				actionListener="#{beanMedida.actionListenerInsertarMedida()}"
+				oncomplete="PF('dlgCrear').hide();">
+			</p:commandButton>
+	</h:form>
+
+</p:dialog>
+
+<p:dialog header="Editar Medida" widgetVar="dlgEditar">
+	<h:form id="formEditar">
+	<p:growl>
+			<p:autoUpdate />
+	</p:growl>
+
+	<p:panelGrid columns="2">
+		<h:outputText value="Tipo de medida" />
+			<p:inputText value="#{beanMedida.medida.tipoMedida}"
+				requiredMessage="El tipo de medida es requerida"
+				required="true">
+			
+			</p:inputText>
+		
+	</p:panelGrid>
+		<br />
+			<p:commandButton value="Actualizar" update="form"
+				actionListener="#{beanMedida.actionListenerActualizarMedida()}"
+				oncomplete="PF('dlgEditar').hide();">
+			</p:commandButton>
+	</h:form>
+
+</p:dialog>
+
+<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Sí" type="button"
+						styleClass="ui-confirmdialog-yes" update="form"
+						icon="ui-icon-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-closethick" />
+</p:confirmDialog>
+</body> 
+</html>

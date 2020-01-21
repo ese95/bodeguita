@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+<body onload="#{beanBodega.inicializar()}">
+	<p:growl>
+		<p:autoUpdate></p:autoUpdate>
+	</p:growl>
+	<p:panel header="Crud BODEGA">
+		<h:form id="form">
+			<p:commandButton icon="fa fa-plus-square" style="margin-right: 90%;"
+				value="  Nuevo" update="formCrear"
+				action="#{beanBodega.limpiarBodega()}" title="Nueva Bodega"
+				oncomplete="PF('dlgCrear').show();">
+			</p:commandButton>
+			<br />
+			<br />
+			<p:dataTable value="#{beanBodega.listaBodega}" var="b">
+
+				<p:column headerText="Nombre">
+					<h:outputText value="#{b.nombreBodega}" />
+				</p:column>
+				<p:column headerText="Dirección">
+					<h:outputText value="#{b.direccionBodega}" />
+				</p:column>
+				<p:column headerText="Punto de venta">
+					<h:outputText value="#{b.puntoVenta.nombrePtoVenta}" />
+					<h:inputHidden value="#{b.puntoVenta.idPtoVenta}" />
+
+				</p:column>
+				<p:column headerText="Usuario">
+					<h:outputText
+						value="#{b.usuario.nombreUsuario} - #{b.usuario.apellidoUsuario}" />
+					<h:inputHidden value="#{b.usuario.idUsuario}" />
+				</p:column>
+				<p:column headerText="Opciones">
+					<p:commandButton icon="fa fa-edit" update=":formEditar"
+						title="Editar"
+						actionListener="#{beanBodega.actionListenerCargarBodega(b)}"
+						oncomplete="PF('dlgEditar').show();">
+					</p:commandButton>
+
+					<p:commandButton update="form" icon="fa fa-trash" title="Eliminar"
+						actionListener="#{beanBodega.actionListenerEliminarUsuario(b.idBodega)}">
+						<p:confirm header="Confirmación" message="¿Desea eliminar?"
+							icon="fa fa-info"></p:confirm>
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+
+	</p:panel>
+
+	<p:dialog header="Crear Bodega" widgetVar="dlgCrear">
+		<h:form id="formCrear">
+			<p:growl>
+				<p:autoUpdate />
+			</p:growl>
+
+			<p:panelGrid columns="4">
+				<h:outputText value="Nombre" />
+				<p:inputText value="#{beanBodega.bodega.nombreBodega}"
+					requiredMessage="El nombre de la bodega es requerido"
+					required="true" />
+				<h:outputText value="Dirección" />
+				<p:inputText value="#{beanBodega.bodega.direccionBodega}"
+					requiredMessage="La dirección es requerida" required="true" />
+				<h:outputText value="Punto de venta" />
+				<p:selectOneMenu required="true"
+					requiredMessage="Seleccione el punto de venta"
+					value="#{beanBodega.idPuntoVenta}">
+					<f:selectItem itemLabel="Seleccione" itemValue="" />
+					<f:selectItems value="#{beanBodega.listaPuntoVenta}" var="r"
+						itemLabel="#{r.nombrePtoVenta}" itemValue="#{r.idPtoVenta}" />
+				</p:selectOneMenu>
+				<h:outputText value="Usuario" />
+				<p:selectOneMenu required="true"
+					requiredMessage="Seleccione el usuario"
+					value="#{beanBodega.idUser}">
+					<f:selectItem itemLabel="Seleccione" itemValue="" />
+					<f:selectItems value="#{beanBodega.listaUsuario}" var="r"
+						itemLabel="#{r.nombreUsuario} - #{r.apellidoUsuario}"
+						itemValue="#{r.idUsuario}" />
+				</p:selectOneMenu>
+
+
+			</p:panelGrid>
+			<br />
+			<p:commandButton value="Crear" update="form"
+				actionListener="#{beanBodega.actionListenerInsertarBodega()}"
+				oncomplete="PF('dlgCrear').hide();">
+			</p:commandButton>
+		</h:form>
+
+	</p:dialog>
+
+	<p:dialog header="Editar Punto de Venta" widgetVar="dlgEditar">
+		<h:form id="formEditar">
+			<p:growl>
+				<p:autoUpdate />
+			</p:growl>
+
+			<p:panelGrid columns="4">
+				<h:outputText value="Nombre" />
+				<p:inputText value="#{beanBodega.bodega.nombreBodega}"
+					requiredMessage="El nombre de la bodega es requerido"
+					required="true" />
+				<h:outputText value="Dirección" />
+				<p:inputText value="#{beanBodega.bodega.direccionBodega}"
+					requiredMessage="La dirección es requerida" required="true" />
+				<h:outputText value="Punto de venta" />
+				<p:selectOneMenu required="true"
+					requiredMessage="Seleccione el punto de venta"
+					value="#{beanBodega.idPuntoVenta}">
+					<f:selectItem itemLabel="Seleccione" itemValue="" />
+					<f:selectItems value="#{beanBodega.listaPuntoVenta}" var="r"
+						itemLabel="#{r.nombrePtoVenta}" itemValue="#{r.idPtoVenta}" />
+				</p:selectOneMenu>
+				<h:outputText value="Usuario" />
+				<p:selectOneMenu required="true"
+					requiredMessage="Seleccione el usuario"
+					value="#{beanBodega.idUser}">
+					<f:selectItem itemLabel="Seleccione" itemValue="" />
+					<f:selectItems value="#{beanBodega.listaUsuario}" var="r"
+						itemLabel="#{r.nombreUsuario} - #{r.apellidoUsuario}"
+						itemValue="#{r.idUsuario}" />
+				</p:selectOneMenu>
+			</p:panelGrid>
+			<br />
+			<p:commandButton value="Actualizar" update="form"
+				actionListener="#{beanBodega.actionListenerActualizarBodega()}"
+				oncomplete="PF('dlgEditar').hide();">
+			</p:commandButton>
+		</h:form>
+
+	</p:dialog>
+
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		<p:commandButton value="Sí" type="button"
+			styleClass="ui-confirmdialog-yes" update="form" icon="ui-icon-check" />
+		<p:commandButton value="No" type="button"
+			styleClass="ui-confirmdialog-no" icon="ui-icon-closethick" />
+	</p:confirmDialog>
+</body>
+</html>

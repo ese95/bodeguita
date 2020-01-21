@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head></h:head> 
+<body onload="#{beanUsuario.inicializar()}"> 
+	<p:growl>
+		<p:autoUpdate></p:autoUpdate>
+	</p:growl>
+<p:panel header="Crud">
+	<h:form id="form">
+	<p:commandButton icon="fa fa-plus-square" style="margin-right: 90%;"
+										value="  Nuevo" update="formCrear" action="#{beanUsuario.limpiarUsuario()}"
+										title="Nuevo Punto de venta" oncomplete="PF('dlgCrear').show();">
+	</p:commandButton>
+	<br />
+	<br />
+	 <p:dataTable value="#{beanUsuario.listaUser}" var="u">
+	 	<p:column headerText="Foto">
+	 	<h:graphicImage value="data:image/jpg;base64,#{u.imagenUsuario}"
+								width="90" />
+	 	</p:column>
+	 	<p:column headerText="Nombre ">
+	 		<h:outputText value="#{u.nombreUsuario}" />
+	 	</p:column>
+	 	<p:column headerText="Apellido">
+	 		<h:outputText value="#{u.apellidoUsuario}" />
+	 	</p:column>
+	 	<p:column headerText="Cédula">
+	 		<h:outputText  value="#{u.cedulaUsuario}"  />
+	 	</p:column>
+	 	<p:column headerText="Correo">
+	 		<h:outputText value="#{u.correoUsuario}" />
+	 	</p:column>
+	 	<p:column headerText="Tipo de usuario">
+	 		<h:outputText value="#{u.rol.tipoRol}" />
+	 		<h:inputHidden value="#{u.rol.idRol}" />
+	 		<h:inputHidden value="#{u.claveUsuario}" />
+	 	</p:column>
+	 	<p:column headerText="Género">
+	 		<h:outputText value="#{u.genero.tipoGenero}" />
+	 		<h:inputHidden value="#{u.genero.idGenero}" />
+	 	</p:column>
+	 	<p:column headerText="Dirección">
+	 		<h:outputText value="#{u.direccionUsuario}" />
+	 	</p:column>
+	 	<p:column headerText="Teléfono">
+	 		<h:outputText value="#{u.telefonoUsuario}" />
+	 	</p:column>
+	 	<p:column headerText="Fecha Nacimiento">
+	 		<h:outputText value="#{u.fechaNacUsuario}" />
+	 	</p:column>
+	 	<p:column headerText="Opciones">
+	 	<p:commandButton icon="fa fa-edit" update=":formEditar" title="Editar" actionListener="#{beanUsuario.actionListenerCargarUsuario(u)}"
+	 	oncomplete="PF('dlgEditar').show();"
+	 	>
+	 	</p:commandButton>
+	 	
+	 	<p:commandButton update="form" icon="fa fa-trash"  title="Eliminar" actionListener="#{beanUsuario.actionListenerEliminarUsuario(u.idUsuario)}">
+	 	<p:confirm header="Confirmación" message="¿Desea eliminar?"
+			icon="fa fa-info"></p:confirm>
+	 	</p:commandButton>
+	 	 </p:column>
+	 </p:dataTable>
+	
+	</h:form>
+
+</p:panel>
+
+<p:dialog header="Crear Usuario" widgetVar="dlgCrear">
+	<h:form id="formCrear">
+	<p:growl>
+			<p:autoUpdate />
+	</p:growl>
+
+	<p:panelGrid columns="4">
+		<h:outputText value="Nombre" />
+			<p:inputText value="#{beanUsuario.user.nombreUsuario}"
+				requiredMessage="El nombre del usuario es requerido"
+				required="true"/>
+			<h:outputText value="Apellido" />
+			<p:inputText value="#{beanUsuario.user.apellidoUsuario}"
+				requiredMessage="El apellido del usuario es requerido"
+				required="true"/>
+							<h:outputText value="Tipo de usuario" />
+							<p:selectOneMenu required="true"
+								requiredMessage="Seleccione el tipo de usuario"
+								value="#{beanUsuario.idRol}">
+								<f:selectItem itemLabel="Seleccione" itemValue="" />
+								<f:selectItems value="#{beanUsuario.listaRol}" var="r"
+									itemLabel="#{r.tipoRol}" itemValue="#{r.idRol}" />
+							</p:selectOneMenu>
+							<h:outputText value="Género" />
+							<p:selectOneMenu required="true"
+								requiredMessage="Seleccione el género del usuario"
+								value="#{beanUsuario.idGenero}">
+								<f:selectItem itemLabel="Seleccione" itemValue="" />
+								<f:selectItems value="#{beanUsuario.listaGenero}" var="r"
+									itemLabel="#{r.tipoGenero}" itemValue="#{r.idGenero}" />
+							</p:selectOneMenu>
+							
+				<h:outputText value="Cédula " />
+			<p:inputText  required="true" value="#{beanUsuario.user.cedulaUsuario}" maxlength="10" requiredMessage="La cédula es requerida"/>
+				<h:outputText value="Correo" />
+			<p:inputText value="#{beanUsuario.user.correoUsuario}"
+				requiredMessage="El correo del usuario es requerido"
+				required="true"/>
+				<h:outputText value="Contraseña" />
+			<p:password value="#{beanUsuario.user.claveUsuario}" feedback="true"  promptLabel="Nivel de seguridad" weakLabel="Baja"
+                    goodLabel="Media" strongLabel="Alta"
+				requiredMessage="La contraseña del usuario es requerida"
+				required="true"/>
+				
+				<h:outputText value="Dirección" />
+			<p:inputTextarea value="#{beanUsuario.user.direccionUsuario}"
+				requiredMessage="La direccion del usuario es requerido"
+				/>
+			<h:outputText value="Fecha de nacimiento" />
+							<p:calendar value="#{beanUsuario.user.fechaNacUsuario}"
+								requiredMessage="La fecha del nacimiento es requerida"
+								required="true" locale="es"></p:calendar>
+				<h:outputText value="Teléfono" />
+			<p:inputText maxlength="10" value="#{beanUsuario.user.telefonoUsuario}"
+				/>
+			<h:outputText value="Imagen" />
+			<p:fileUpload value="#{beanUsuario.uploadedFile}" mode="simple"  >
+			</p:fileUpload> 
+					
+			
+			
+	</p:panelGrid>
+		<br />
+			<p:commandButton value="Crear" update="form"
+				actionListener="#{beanUsuario.actionListenerInsertarUsuario()}"
+				oncomplete="PF('dlgCrear').hide();">
+			</p:commandButton>
+	</h:form>
+
+</p:dialog>
+
+<p:dialog header="Editar Punto de Venta" widgetVar="dlgEditar">
+	<h:form id="formEditar">
+	<p:growl>
+			<p:autoUpdate />
+	</p:growl>
+
+	<p:panelGrid columns="4">
+		<h:outputText value="Nombre" />
+			<p:inputText value="#{beanUsuario.user.nombreUsuario}"
+				requiredMessage="El nombre del usuario es requerido"
+				required="true"/>
+			<h:outputText value="Apellido" />
+			<p:inputText value="#{beanUsuario.user.apellidoUsuario}"
+				requiredMessage="El apellido del usuario es requerido"
+				required="true"/>
+							<h:outputText value="Tipo de usuario" />
+							<p:selectOneMenu required="true"
+								requiredMessage="Seleccione el tipo de usuario"
+								value="#{beanUsuario.idRol}">
+								<f:selectItem itemLabel="Seleccione" itemValue="" />
+								<f:selectItems value="#{beanUsuario.listaRol}" var="r"
+									itemLabel="#{r.tipoRol}" itemValue="#{r.idRol}" />
+							</p:selectOneMenu>
+							<h:outputText value="Género" />
+							<p:selectOneMenu required="true"
+								requiredMessage="Seleccione el género del usuario"
+								value="#{beanUsuario.idGenero}">
+								<f:selectItem itemLabel="Seleccione" itemValue="" />
+								<f:selectItems value="#{beanUsuario.listaGenero}" var="r"
+									itemLabel="#{r.tipoGenero}" itemValue="#{r.idGenero}" />
+							</p:selectOneMenu>
+							
+				<h:outputText value="Cédula " />
+				<p:inputText  required="true" value="#{beanUsuario.user.cedulaUsuario}" maxlength="10" requiredMessage="La cédula es requerida"/>
+			<h:outputText value="Correo" />
+			<p:inputText value="#{beanUsuario.user.correoUsuario}"
+				requiredMessage="El correo del usuario es requerido"
+				required="true"/>
+	
+				<h:outputText value="Dirección" />
+			<p:inputTextarea value="#{beanUsuario.user.direccionUsuario}"
+				requiredMessage="La direccion del usuario es requerido"
+				/>
+			<h:outputText value="Fecha de nacimiento" />
+							<p:calendar value="#{beanUsuario.user.fechaNacUsuario}"
+								requiredMessage="La fecha del nacimiento es requerida"
+								required="true" locale="es"></p:calendar>
+				<h:outputText value="Teléfono" />
+			<p:inputText maxlength="10" value="#{beanUsuario.user.telefonoUsuario}"
+				/>
+			<h:outputText value="Imagen" />
+			<p:fileUpload value="#{beanUsuario.uploadedFile}" mode="simple"  >
+			</p:fileUpload> 
+	</p:panelGrid>
+		<br />
+			<p:commandButton value="Actualizar" update="form"
+				actionListener="#{beanUsuario.actionListenerActualizarUsuario()}"
+				oncomplete="PF('dlgEditar').hide();">
+			</p:commandButton>
+	</h:form>
+
+</p:dialog>
+
+<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Sí" type="button"
+						styleClass="ui-confirmdialog-yes" update="form"
+						icon="ui-icon-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-closethick" />
+</p:confirmDialog>
+</body> 
+</html>
