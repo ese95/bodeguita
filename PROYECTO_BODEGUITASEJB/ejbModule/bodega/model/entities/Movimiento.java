@@ -2,6 +2,7 @@ package bodega.model.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 
@@ -27,12 +28,15 @@ public class Movimiento implements Serializable {
 	@Column(length=80)
 	private String comentario;
 
+	@Column(name="costo_movim", precision=6, scale=2)
+	private BigDecimal costoMovim;
+
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_movim", nullable=false)
 	private Date fechaMovim;
 
-	@Column(name="orden_compra_o_factura_movim", length=10)
-	private String ordenCompraOFacturaMovim;
+	@Column(name="precio_base_movim", precision=6, scale=2)
+	private BigDecimal precioBaseMovim;
 
 	//bi-directional many-to-one association to Bodega
 	@ManyToOne
@@ -43,6 +47,11 @@ public class Movimiento implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="id_producto")
 	private Producto producto;
+
+	//bi-directional many-to-one association to TipoDocumento
+	@ManyToOne
+	@JoinColumn(name="id_documento")
+	private TipoDocumento tipoDocumento;
 
 	public Movimiento() {
 	}
@@ -71,6 +80,14 @@ public class Movimiento implements Serializable {
 		this.comentario = comentario;
 	}
 
+	public BigDecimal getCostoMovim() {
+		return this.costoMovim;
+	}
+
+	public void setCostoMovim(BigDecimal costoMovim) {
+		this.costoMovim = costoMovim;
+	}
+
 	public Date getFechaMovim() {
 		return this.fechaMovim;
 	}
@@ -79,12 +96,12 @@ public class Movimiento implements Serializable {
 		this.fechaMovim = fechaMovim;
 	}
 
-	public String getOrdenCompraOFacturaMovim() {
-		return this.ordenCompraOFacturaMovim;
+	public BigDecimal getPrecioBaseMovim() {
+		return this.precioBaseMovim;
 	}
 
-	public void setOrdenCompraOFacturaMovim(String ordenCompraOFacturaMovim) {
-		this.ordenCompraOFacturaMovim = ordenCompraOFacturaMovim;
+	public void setPrecioBaseMovim(BigDecimal precioBaseMovim) {
+		this.precioBaseMovim = precioBaseMovim;
 	}
 
 	public Bodega getBodega() {
@@ -101,6 +118,14 @@ public class Movimiento implements Serializable {
 
 	public void setProducto(Producto producto) {
 		this.producto = producto;
+	}
+
+	public TipoDocumento getTipoDocumento() {
+		return this.tipoDocumento;
+	}
+
+	public void setTipoDocumento(TipoDocumento tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
 	}
 
 }

@@ -10,6 +10,26 @@
 	<p:growl>
 		<p:autoUpdate></p:autoUpdate>
 	</p:growl>
+<h:form >  
+    <p:menubar>
+            
+            <p:menuitem value="Usuario" action="#{beanUsuario.irUsuario()}" update="@form"  icon="fa fa-user" />
+            <p:menuitem value="Rol" action="#{beanUsuario.irRol()}" update="@form"  icon="fa fa-address-book" />
+        <p:menuitem value="Categoría" action="#{beanUsuario.irCategoria()}" update="@form"  icon="fa fa-clipboard" />
+      
+            <p:menuitem value="Medida" action="#{beanUsuario.irMedida()}" update="@form"  icon="fa fa-archive" />
+        <p:menuitem value="Punto de venta " action="#{beanUsuario.irPuntoVenta()}" update="@form"  icon="fa fa-building" />
+            <p:menuitem value="Género" action="#{beanUsuario.irGenero()}" update="@form"  icon="fa fa-address-card" />
+        <p:menuitem value="Bodega" action="#{beanUsuario.irBodega()}" update="@form" icon="fa fa-columns" />
+            <p:menuitem value="Producto"  action="#{beanUsuario.irProducto()}" update="@form" icon="fa fa-shopping-cart" />
+       
+
+        <f:facet name="options">
+            <p:inputText style="margin:1px 10px 1px 1px;" placeholder="Buscar"/>
+            <p:commandButton type="button" value="Cerrar Sesión" icon="fa fa-times-circle" />
+        </f:facet>
+    </p:menubar>
+</h:form>	
 <p:panel header="Crud">
 	<h:form id="form">
 	<p:commandButton icon="fa fa-plus-square" style="margin-right: 90%;"

@@ -24,9 +24,9 @@ public class Rol implements Serializable {
 	@Column(name="tipo_rol", length=30)
 	private String tipoRol;
 
-	//bi-directional many-to-one association to Usuario
+	//bi-directional many-to-one association to UsuarioRol
 	@OneToMany(mappedBy="rol")
-	private List<Usuario> usuarios;
+	private List<UsuarioRol> usuarioRols;
 
 	public Rol() {
 	}
@@ -47,26 +47,26 @@ public class Rol implements Serializable {
 		this.tipoRol = tipoRol;
 	}
 
-	public List<Usuario> getUsuarios() {
-		return this.usuarios;
+	public List<UsuarioRol> getUsuarioRols() {
+		return this.usuarioRols;
 	}
 
-	public void setUsuarios(List<Usuario> usuarios) {
-		this.usuarios = usuarios;
+	public void setUsuarioRols(List<UsuarioRol> usuarioRols) {
+		this.usuarioRols = usuarioRols;
 	}
 
-	public Usuario addUsuario(Usuario usuario) {
-		getUsuarios().add(usuario);
-		usuario.setRol(this);
+	public UsuarioRol addUsuarioRol(UsuarioRol usuarioRol) {
+		getUsuarioRols().add(usuarioRol);
+		usuarioRol.setRol(this);
 
-		return usuario;
+		return usuarioRol;
 	}
 
-	public Usuario removeUsuario(Usuario usuario) {
-		getUsuarios().remove(usuario);
-		usuario.setRol(null);
+	public UsuarioRol removeUsuarioRol(UsuarioRol usuarioRol) {
+		getUsuarioRols().remove(usuarioRol);
+		usuarioRol.setRol(null);
 
-		return usuario;
+		return usuarioRol;
 	}
 
 }

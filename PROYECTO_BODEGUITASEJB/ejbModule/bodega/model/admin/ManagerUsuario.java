@@ -71,7 +71,9 @@ private ManagerDAO managerDAO;
 			u.setGenero(usuario.getGenero());
 			u.setImagenUsuario(usuario.getImagenUsuario());
 			u.setNombreUsuario(usuario.getNombreUsuario());
-			u.setRol(usuario.getRol());
+		
+			//u.setRol(usuario.getRol());
+		//	u.setu
 			u.setTelefonoUsuario(usuario.getTelefonoUsuario());
 						
 			managerDAO.actualizar(u);

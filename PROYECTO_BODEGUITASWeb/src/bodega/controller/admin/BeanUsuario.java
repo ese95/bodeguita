@@ -63,7 +63,7 @@ public class BeanUsuario implements Serializable {
 			user=new Usuario();
 			Genero gen=managerGenero.findByIdGeneros(u.getGenero().getIdGenero());
 			
-			Rol rol=managerRol.findByIdRol(u.getRol().getIdRol());
+			//Rol rol=managerRol.findByIdRol(u.getRol().getIdRol());
 			
 			user.setApellidoUsuario(u.getApellidoUsuario());
 			user.setCedulaUsuario(u.getCedulaUsuario());
@@ -73,9 +73,9 @@ public class BeanUsuario implements Serializable {
 			user.setCorreoUsuario(u.getCorreoUsuario());
 			user.setDireccionUsuario(u.getDireccionUsuario());
 			user.setFechaNacUsuario(u.getFechaNacUsuario());
-			user.setRol(rol);
+			//user.setRol(rol);
 			user.setGenero(gen);
-			setIdRol(u.getRol().getIdRol());
+			//setIdRol(u.getRol().getIdRol());
 			setIdGenero(u.getGenero().getIdGenero());
 			user.setImagenUsuario(u.getImagenUsuario());
 			user.setNombreUsuario(u.getNombreUsuario());
@@ -124,8 +124,8 @@ public class BeanUsuario implements Serializable {
 				
 				System.out.println("-->genero"+u.getGenero().getTipoGenero());
 				
-				u.setRol(managerRol.findByIdRol(idRol));
-				System.out.println("--> rol "+u.getRol().getTipoRol());
+				//u.setRol(managerRol.findByIdRol(idRol));
+				//System.out.println("--> rol "+u.getRol().getTipoRol());
 				u.setTelefonoUsuario(user.getTelefonoUsuario());
 				managerUser.actualizarUsuario(u);
 		        listaUser=managerUser.findAllUsuarios();
@@ -155,7 +155,7 @@ public class BeanUsuario implements Serializable {
 		user.setGenero(null);
 		user.setImagenUsuario("");
 		user.setNombreUsuario("");
-		user.setRol(null);
+		//user.setRol(null);
 		user.setTelefonoUsuario("");
 		}
 
@@ -195,7 +195,7 @@ public class BeanUsuario implements Serializable {
 					Rol rol=managerRol.findByIdRol(idRol);
 					u.setImagenUsuario(cod64);
 					u.setNombreUsuario(user.getNombreUsuario());
-					u.setRol(rol);
+					
 					u.setTelefonoUsuario(user.getTelefonoUsuario());
 					managerUser.insertarUsuario(u);
 				    listaUser=managerUser.findAllUsuarios();
@@ -244,6 +244,32 @@ public class BeanUsuario implements Serializable {
 
 	}
 
+	
+	public String irUsuario() {
+		return "usuario";
+	}
+	public String irRol() {
+		return "rol";
+		}
+	public String irPuntoVenta() {
+		return "punto_venta";
+	}
+	public String irProducto() {
+		return "producto";
+	}
+	public String irMedida() {
+		return "medida";
+	}
+	public String irGenero() {
+		return "genero";
+	}
+	public String irCategoria() {
+		return "categoria";
+	}
+	public String irBodega() {
+		return "bodega";
+	}
+	
 	public List<Usuario> getListaUser() {
 		return listaUser;
 	}
