@@ -2,15 +2,18 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="PROYECTO_BODEGUITASEJB">
 	<jta-data-source>java:/BodegaDS</jta-data-source>
-		<class>bodega.model.entities.Bodega</class>
-		<class>bodega.model.entities.Categoria</class>
-		<class>bodega.model.entities.Genero</class>
-		<class>bodega.model.entities.Medida</class>
-		<class>bodega.model.entities.Movimiento</class>
-		<class>bodega.model.entities.Producto</class>
-		<class>bodega.model.entities.PuntoVenta</class>
-		<class>bodega.model.entities.Rol</class>
-		<class>bodega.model.entities.Usuario</class>
+	<class>bodega.model.entities.Bitacora</class>
+	<class>bodega.model.entities.Bodega</class>
+	<class>bodega.model.entities.Categoria</class>
+	<class>bodega.model.entities.Genero</class>
+	<class>bodega.model.entities.Medida</class>
+	<class>bodega.model.entities.Movimiento</class>
+	<class>bodega.model.entities.Producto</class>
+	<class>bodega.model.entities.PuntoVenta</class>
+	<class>bodega.model.entities.Rol</class>
+	<class>bodega.model.entities.TipoDocumento</class>
+	<class>bodega.model.entities.Usuario</class>
+	<class>bodega.model.entities.UsuarioRol</class>
 	
 	</persistence-unit>
 	

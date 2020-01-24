@@ -57,15 +57,17 @@ public class BeanBodega implements Serializable {
 	public void actionListenerCargarBodega(Bodega bod) {
 		try {
 			bodega=new Bodega();
-			puntoVenta=managerPv.findByIdPuntoVenta(bod.getPuntoVenta().getIdPtoVenta());
-			user=managerUser.findByIdUsuario(bod.getUsuario().getIdUsuario());
+			PuntoVenta puntoVenta=managerPv.findByIdPuntoVenta(bod.getPuntoVenta().getIdPtoVenta());
+			Usuario user=managerUser.findByIdUsuario(bod.getUsuario().getIdUsuario());
+			
+			idUser=bod.getUsuario().getIdUsuario();
+			idPuntoVenta=bod.getPuntoVenta().getIdPtoVenta();
 			bodega.setDireccionBodega(bod.getDireccionBodega());
 			bodega.setNombreBodega(bod.getNombreBodega());
 			bodega.setIdBodega(bod.getIdBodega());
 			bodega.setPuntoVenta(puntoVenta);
 			bodega.setUsuario(user);
-			setIdPuntoVenta(idPuntoVenta);
-			setIdUser(idUser);
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();

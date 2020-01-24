@@ -66,6 +66,7 @@ public class BeanProducto implements Serializable {
 			prod.setCantidadStockProducto(p.getCantidadStockProducto());
 			prod.setCaracteristicasProducto(p.getCaracteristicasProducto());
 			idCategoria=p.getCategoria().getIdCategoria();
+			idMedida=p.getMedida().getIdMedida();
 			prod.setIdProducto(p.getIdProducto());
 			prod.setCategoria(cat);
 			prod.setCostoProducto(p.getCostoProducto());
@@ -103,7 +104,7 @@ public class BeanProducto implements Serializable {
 				
 					String cod64 = encodeToString(image, "png");
 				
-					Producto p=managerProd.findByIdProducto(prod.getIdProducto());
+				Producto p=managerProd.findByIdProducto(prod.getIdProducto());
 				p.setCantidadStockProducto(prod.getCantidadStockProducto());
 				p.setCaracteristicasProducto(prod.getCaracteristicasProducto());	
 				p.setCostoProducto(prod.getCostoProducto());
