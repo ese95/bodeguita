@@ -244,7 +244,9 @@ public class BeanUsuario implements Serializable {
 
 	}
 
-	
+	public String irHome() {
+		return "home";
+	}
 	public String irUsuario() {
 		return "usuario";
 	}
@@ -268,6 +270,9 @@ public class BeanUsuario implements Serializable {
 	}
 	public String irBodega() {
 		return "bodega";
+	}
+	public String irUsuarioRol() {
+		return "usuario_rol";
 	}
 	
 	public List<Usuario> getListaUser() {

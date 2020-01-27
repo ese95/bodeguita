@@ -45,12 +45,22 @@ private ManagerDAO managerDAO;
     	
     	try {
 			return (Usuario) managerDAO.findById(Usuario.class, id);
+			//managerDAO.findWhere(clase, pClausulaWhere, pOrderBy)
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;	
     }
-    
+ /*public Usuario findWhereCorreoUsuario(String correo) {
+    	
+    	try {
+			return (Usuario) managerDAO.findById(Usuario.class, id);
+			managerDAO.findWhere(clase, pClausulaWhere, pOrderBy)
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;	
+    }*/
     public void insertarUsuario(Usuario us) throws Exception {
     	//managerDAO.insertar(cat);
     	em.merge(us);

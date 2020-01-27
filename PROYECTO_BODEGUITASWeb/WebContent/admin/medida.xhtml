@@ -4,7 +4,11 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"> 
-
+<f:metadata>
+		<f:event listener="#{beanLogin.actionVerificarLogin()}"
+			type="preRenderView"></f:event>
+		
+</f:metadata>
 <h:head></h:head> 
 <body onload="#{beanMedida.inicializar()}"> 
 	<p:growl>
@@ -24,9 +28,10 @@
             <p:menuitem value="Producto"  action="#{beanUsuario.irProducto()}" update="@form" icon="fa fa-shopping-cart" />
        
 
-        <f:facet name="options">
-            <p:inputText style="margin:1px 10px 1px 1px;" placeholder="Buscar"/>
-            <p:commandButton type="button" value="Cerrar Sesión" icon="fa fa-times-circle" />
+         <f:facet name="options">  
+        	<p:outputLabel value="| ADMINISTRADOR | "></p:outputLabel>
+        	 <p:outputLabel value="#{beanLogin.correo} | " ></p:outputLabel>      	 
+            <p:commandButton  action="#{beanLogin.salirSistema()}" value="Cerrar sesión" style="background-color:#DF0101" icon="fa fa-sign-out" />
         </f:facet>
     </p:menubar>
 </h:form>
