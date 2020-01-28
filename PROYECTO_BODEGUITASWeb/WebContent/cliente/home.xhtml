@@ -27,131 +27,69 @@
         </f:facet>
     </p:menubar>
 </h:form>
-	
-	<p:panel header="CLIENTE">
+	<p:panel header="PRODUCTOS">
 		<h:form id="form">
-			<p:commandButton icon="fa fa-plus-square" style="margin-right: 90%;"
-				value="  Nuevo" update="formCrear"
-				action="#{beanUsuarioRol.limpiarUsuarioRol()}" title="Nuevo Usuario-Rol"
-				oncomplete="PF('dlgCrear').show();">
-			</p:commandButton>
+			
 			<br />
 			<br />
-			<p:dataTable reflow="true" value="#{beanUsuarioRol.listaUsuarioRol}" var="ur">
+			<p:dataTable value="#{beanProducto.listaProducto}" var="p">
+				<p:column headerText="Foto">
+					<h:graphicImage value="data:image/jpg;base64,#{p.imagenProducto}"
+						width="90" />
+				</p:column>
+				<p:column headerText="Nombre ">
+					<h:outputText value="#{p.nombreProducto}" />
+				</p:column>
+				<p:column headerText="Descripción">
+					<h:outputText value="#{p.descripcionProducto}" />
+				</p:column>
+				<p:column headerText="Características">
+					<h:outputText value="#{p.caracteristicasProducto}" />
+				</p:column>
 
-			  <p:column headerText="Cédula">
-					<h:outputText
-						value="#{ur.usuario.cedulaUsuario} " />
-					
-				</p:column>
-				<p:column headerText="Correo">
-					<h:outputText
-						value="#{ur.usuario.correoUsuario} " />
-					
-				</p:column>
-				<p:column headerText="Nombres">
-					<h:outputText
-						value="#{ur.usuario.nombreUsuario} " />
-					
-					<h:inputHidden value="#{ur.idUsuarioRol}" />
-				</p:column>
-				<p:column headerText="Apellidos">
-					<h:outputText
-						value=" #{ur.usuario.apellidoUsuario}" />
-					
-				</p:column>
-				<p:column headerText="Rol">
-					<h:outputText
-						value="#{ur.rol.tipoRol}" />
-					<h:inputHidden value="#{ur.rol.idRol}" />
-				</p:column>
-				<p:column headerText="Opciones">
-					<p:commandButton icon="fa fa-edit" update=":formEditar"
-						title="Editar"
-						actionListener="#{beanUsuarioRol.actionListenerCargarUsuarioRol(ur)}"
-						oncomplete="PF('dlgEditar').show();">
-					</p:commandButton>
+				<p:column headerText="Medida">
+					<h:outputText value="#{p.medida.tipoMedida}" />
+					<h:inputHidden value="#{p.medida.idMedida}" />
 
-					<p:commandButton update="form" icon="fa fa-trash" title="Eliminar"
-						actionListener="#{beanUsuarioRol.actionListenerEliminarUsuarioRol(ur.idUsuarioRol)}">
-						<p:confirm header="Confirmación" message="¿Desea eliminar?"
-							icon="fa fa-info"></p:confirm>
-					</p:commandButton>
 				</p:column>
+
+				<p:column headerText="Categoría">
+					<h:outputText value="#{p.categoria.nombreCategoria}" />
+					<h:inputHidden value="#{p.categoria.idCategoria}" />
+				</p:column>
+				<p:column headerText="Precio base">
+					<h:outputText value="#{p.precioBaseProducto}" />
+				</p:column>
+
+				<p:column headerText="Costo de venta">
+					<h:outputText value="#{p.costoProducto}" />
+				</p:column>
+				<p:column headerText="Cantidad Stock">
+					<h:outputText value="#{p.cantidadStockProducto}" />
+				</p:column>
+ 				<p:column headerText="Estado ">
+	 		<h:outputText value="#{p.estadoProducto=='true'?'Activo':'Inactivo'}" />
+	 			</p:column>
+<!-- 				<p:column headerText="Opciones"> -->
+<!-- 					<p:commandButton icon="fa fa-edit" update=":formEditar" -->
+<!-- 						title="Editar" -->
+<!-- 						actionListener="#{beanProducto.actionListenerCargarProducto(p)}" -->
+<!-- 						oncomplete="PF('dlgEditar').show();"> -->
+<!-- 					</p:commandButton> -->
+
+<!-- 					<p:commandButton update="form" icon="fa fa-trash" title="Eliminar" -->
+<!-- 						actionListener="#{beanProducto.actionListenerEliminarProducto(p.idProducto)}"> -->
+<!-- 						<p:confirm header="Confirmación" message="¿Desea eliminar?" -->
+<!-- 							icon="fa fa-info"></p:confirm> -->
+<!-- 					</p:commandButton> -->
+<!-- 				</p:column> -->
 			</p:dataTable>
+
 		</h:form>
 
 	</p:panel>
-
-	<p:dialog header="Crear Usuario-Rol" widgetVar="dlgCrear">
-		<h:form id="formCrear">
-			<p:growl>
-				<p:autoUpdate />
-			</p:growl>
-
-			<p:panelGrid columns="2">
-				<h:outputText value="Usuario" />
-				<p:selectOneMenu required="true"
-					requiredMessage="Seleccione el usuario"
-					value="#{beanUsuarioRol.idUser}">
-					<f:selectItem itemLabel="Seleccione" itemValue="" />
-					<f:selectItems value="#{beanUsuarioRol.listaUsuario}" var="r"
-						itemLabel="#{r.nombreUsuario} - #{r.apellidoUsuario}" itemValue="#{r.idUsuario}" />
-				</p:selectOneMenu>
-				<h:outputText value="Rol" />
-				<p:selectOneMenu required="true"
-					requiredMessage="Seleccione el rol"
-					value="#{beanUsuarioRol.idRol}">
-					<f:selectItem itemLabel="Seleccione" itemValue="" />
-					<f:selectItems value="#{beanUsuarioRol.listaRol}" var="r"
-						itemLabel="#{r.tipoRol} "
-						itemValue="#{r.idRol}" />
-				</p:selectOneMenu>
-
-			</p:panelGrid>
-			<br />
-			<p:commandButton value="Crear" update="form"
-				actionListener="#{beanUsuarioRol.actionListenerInsertarUsuario()}"
-				oncomplete="PF('dlgCrear').hide();">
-			</p:commandButton>
-		</h:form>
-
-	</p:dialog>
-
-	<p:dialog header="Editar Usuario-Rol" widgetVar="dlgEditar">
-		<h:form id="formEditar">
-			<p:growl>
-				<p:autoUpdate />
-			</p:growl>
-
-			<p:panelGrid columns="2">
-				<h:outputText value="Usuario" />
-				<p:selectOneMenu required="true"
-					requiredMessage="Seleccione el usuario"
-					value="#{beanUsuarioRol.idUser}">
-					<f:selectItem itemLabel="Seleccione" itemValue="" />
-					<f:selectItems value="#{beanUsuarioRol.listaUsuario}" var="r"
-						itemLabel="#{r.nombreUsuario} - #{r.apellidoUsuario}" itemValue="#{r.idUsuario}" />
-				</p:selectOneMenu>
-				<h:outputText value="Rol" />
-				<p:selectOneMenu required="true"
-					requiredMessage="Seleccione el rol"
-					value="#{beanUsuarioRol.idRol}">
-					<f:selectItem itemLabel="Seleccione" itemValue="" />
-					<f:selectItems value="#{beanUsuarioRol.listaRol}" var="r"
-						itemLabel="#{r.tipoRol} "
-						itemValue="#{r.idRol}" />
-				</p:selectOneMenu>
-
-			</p:panelGrid>
-			<br />
-			<p:commandButton value="Actualizar" update="form"
-				actionListener="#{beanUsuarioRol.actionListenerActualizarUsuarioRol()}"
-				oncomplete="PF('dlgEditar').hide();">
-			</p:commandButton>
-		</h:form>
-
-	</p:dialog>
+	
+	
 
 	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
 		<p:commandButton value="Sí" type="button"
