@@ -247,6 +247,9 @@ public class BeanUsuario implements Serializable {
 	public String irHome() {
 		return "home";
 	}
+	public String irBitacora() {
+		return "bitacora";
+	}
 	public String irUsuario() {
 		return "usuario";
 	}

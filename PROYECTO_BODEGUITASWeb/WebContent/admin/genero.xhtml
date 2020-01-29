@@ -1,124 +1,183 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"> 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
 <f:metadata>
-		<f:event listener="#{beanLogin.actionVerificarLogin()}"
-			type="preRenderView"></f:event>
-		
+	<f:event listener="#{beanLogin.actionVerificarLogin()}"
+		type="preRenderView"></f:event>
+
 </f:metadata>
-<h:head></h:head> 
-<body onload="#{beanGenero.inicializar()}"> 
+<h:head></h:head>
+<body onload="#{beanGenero.inicializar()}">
 	<p:growl>
 		<p:autoUpdate></p:autoUpdate>
 	</p:growl>
-	<h:form >  
-    <p:menubar>
-            
-            <p:menuitem value="Usuario" action="#{beanUsuario.irUsuario()}" update="@form"  icon="fa fa-user" />
-            <p:menuitem value="Rol" action="#{beanUsuario.irRol()}" update="@form"  icon="fa fa-address-book" />
-        <p:menuitem value="Categoría" action="#{beanUsuario.irCategoria()}" update="@form"  icon="fa fa-clipboard" />
-      
-            <p:menuitem value="Medida" action="#{beanUsuario.irMedida()}" update="@form"  icon="fa fa-archive" />
-        <p:menuitem value="Punto de venta " action="#{beanUsuario.irPuntoVenta()}" update="@form"  icon="fa fa-building" />
-            <p:menuitem value="Género" action="#{beanUsuario.irGenero()}" update="@form"  icon="fa fa-address-card" />
-        <p:menuitem value="Bodega" action="#{beanUsuario.irBodega()}" update="@form" icon="fa fa-columns" />
-            <p:menuitem value="Producto"  action="#{beanUsuario.irProducto()}" update="@form" icon="fa fa-shopping-cart" />
-       
+	<h:form>
+		<p:menubar>
 
-        <f:facet name="options">  
-        	<p:outputLabel value="| ADMINISTRADOR | "></p:outputLabel>
-        	 <p:outputLabel value="#{beanLogin.correo} | " ></p:outputLabel>      	 
-            <p:commandButton  action="#{beanLogin.salirSistema()}" value="Cerrar sesión" style="background-color:#DF0101" icon="fa fa-sign-out" />
-        </f:facet>
-    </p:menubar>
-</h:form>
-<p:panel header="Crud">
-	<h:form id="form">
-	<p:commandButton icon="fa fa-plus-square" style="margin-right: 90%;"
-										value="  Nuevo" update="formCrear" action="#{beanGenero.limpiarGenero()}"
-										title="Nuevo Género" oncomplete="PF('dlgCrear').show();">
-	</p:commandButton>
-	<br />
-	<br />
-	 <p:dataTable value="#{beanGenero.listaGenero}" var="g">
-	 	<p:column headerText="Tipo género">
-	 		<h:outputText value="#{g.tipoGenero}" />
-	 	</p:column>
-	  
-	 	<p:column headerText="Opciones">
-	 	<p:commandButton icon="fa fa-edit" update=":formEditar" title="Editar" actionListener="#{beanGenero.actionListenerCargarGenero(g)}"
-	 	oncomplete="PF('dlgEditar').show();"
-	 	>
-	 	</p:commandButton>
-	 	
-	 	<p:commandButton update="form" icon="fa fa-trash"  title="Eliminar" actionListener="#{beanGenero.actionListenerEliminarGenero(g.idGenero)}">
-	 	<p:confirm header="Confirmación" message="¿Desea eliminar?"
-			icon="fa fa-info"></p:confirm>
-	 	</p:commandButton>
-	 	 </p:column>
-	 </p:dataTable>
-	
+			<f:facet name="options">
+				<p:outputLabel value="| ADMINISTRADOR | "></p:outputLabel>
+				<p:outputLabel value="#{beanLogin.correo} | "></p:outputLabel>
+				<p:commandButton action="#{beanLogin.salirSistema()}"
+					value="Cerrar sesión" style="background-color:#DF0101"
+					icon="fa fa-sign-out" />
+			</f:facet>
+		</p:menubar>
 	</h:form>
+	<p:panel header="GÉNERO">
 
-</p:panel>
+		<div class="ui-g" style="margin-top: 20px;">
 
-<p:dialog header="Crear Género" widgetVar="dlgCrear">
-	<h:form id="formCrear">
-	<p:growl>
-			<p:autoUpdate />
-	</p:growl>
+			<div class="ui-g-12 ui-md-2 ui-lg-2">
+				<h:form>
+					<p:panelMenu>
+						<p:submenu label="Usuario">
+							<p:menuitem value="Usuario" action="#{beanUsuario.irUsuario()}"
+								update="@form" icon="fa fa-user" />
+							<p:menuitem value="Rol" action="#{beanUsuario.irRol()}"
+								update="@form" icon="fa fa-address-book" />
+							<p:menuitem value="Género" action="#{beanUsuario.irGenero()}"
+								update="@form" icon="fa fa-address-card" />
+							<p:menuitem value="Usuario - Rol"
+								action="#{beanUsuario.irUsuarioRol()}" update="@form"
+								icon="fa fa-book" />
 
-	<p:panelGrid columns="2">
-		<h:outputText value="Tipo de Género" />
-			<p:inputText value="#{beanGenero.genero.tipoGenero}"
-				requiredMessage="El tipo de género es requerido"
-				required="true">
-			
-			</p:inputText>
-			
-	</p:panelGrid>
-		<br />
+						</p:submenu>
+						<p:submenu label="Producto">
+							<p:menuitem value="Producto" action="#{beanUsuario.irProducto()}"
+								update="@form" icon="fa fa-shopping-cart" />
+							<p:menuitem value="Medida" action="#{beanUsuario.irMedida()}"
+								update="@form" icon="fa fa-archive" />
+							<p:menuitem value="Categoría"
+								action="#{beanUsuario.irCategoria()}" update="@form"
+								icon="fa fa-clipboard" />
+
+						</p:submenu>
+						<p:submenu label="Bodega">
+							<p:menuitem value="Bodega" action="#{beanUsuario.irBodega()}"
+								update="@form" icon="fa fa-columns" />
+							<p:menuitem value="Punto de venta "
+								action="#{beanUsuario.irPuntoVenta()}" update="@form"
+								icon="fa fa-building" />
+							<p:menuitem value="Categoría"
+								action="#{beanUsuario.irCategoria()}" update="@form"
+								icon="fa fa-clipboard" />
+
+						</p:submenu>
+						<p:separator />
+						<p:submenu label="Bitácora" icon="fa fa-table">
+							<p:menuitem value="Bitácora" action="#{beanUsuario.irBitacora()}"
+								update="@form" icon="fa fa-table" />
+
+						</p:submenu>
+
+						<p:separator />
+						<p:submenu label="Opciones" icon="fa fa-cog">
+							<p:menuitem value="Cambiar contraseña"
+								action="#{beanUsuario.irBitacora()}" update="@form"
+								icon="fa fa-key" />
+
+							<p:menuitem value="Cerrar sesión"
+								action="#{beanLogin.salirSistema()}" update="@form"
+								icon="fa fa-sign-out" />
+
+						</p:submenu>
+
+					</p:panelMenu>
+				</h:form>
+			</div>
+
+			<div class="ui-g-12 ui-md-10 ui-lg-10">
+				<h:form id="form">
+					<p:commandButton icon="fa fa-plus-square"
+						style="margin-right: 90%;" value="  Nuevo" update="formCrear"
+						action="#{beanGenero.limpiarGenero()}" title="Nuevo Género"
+						oncomplete="PF('dlgCrear').show();">
+					</p:commandButton>
+					<br />
+					<br />
+					<p:dataTable value="#{beanGenero.listaGenero}" var="g">
+						<p:column headerText="Tipo género">
+							<h:outputText value="#{g.tipoGenero}" />
+						</p:column>
+
+						<p:column headerText="Opciones">
+							<p:commandButton icon="fa fa-edit" update=":formEditar"
+								title="Editar"
+								actionListener="#{beanGenero.actionListenerCargarGenero(g)}"
+								oncomplete="PF('dlgEditar').show();">
+							</p:commandButton>
+
+							<p:commandButton update="form" icon="fa fa-trash"
+								title="Eliminar"
+								actionListener="#{beanGenero.actionListenerEliminarGenero(g.idGenero)}">
+								<p:confirm header="Confirmación" message="¿Desea eliminar?"
+									icon="fa fa-info"></p:confirm>
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+
+				</h:form>
+			</div>
+
+		</div>
+
+
+	</p:panel>
+
+	<p:dialog header="Crear Género" widgetVar="dlgCrear">
+		<h:form id="formCrear">
+			<p:growl>
+				<p:autoUpdate />
+			</p:growl>
+
+			<p:panelGrid columns="2">
+				<h:outputText value="Tipo de Género" />
+				<p:inputText value="#{beanGenero.genero.tipoGenero}"
+					requiredMessage="El tipo de género es requerido" required="true">
+
+				</p:inputText>
+
+			</p:panelGrid>
+			<br />
 			<p:commandButton value="Crear" update="form"
 				actionListener="#{beanGenero.actionListenerInsertarGenero()}"
 				oncomplete="PF('dlgCrear').hide();">
 			</p:commandButton>
-	</h:form>
+		</h:form>
 
-</p:dialog>
+	</p:dialog>
 
-<p:dialog header="Editar Género" widgetVar="dlgEditar">
-	<h:form id="formEditar">
-	<p:growl>
-			<p:autoUpdate />
-	</p:growl>
+	<p:dialog header="Editar Género" widgetVar="dlgEditar">
+		<h:form id="formEditar">
+			<p:growl>
+				<p:autoUpdate />
+			</p:growl>
 
-	<p:panelGrid columns="2">
-		<h:outputText value="Tipo de género" />
-			<p:inputText value="#{beanGenero.genero.tipoGenero}"
-				requiredMessage="El tipo de género es requerido"
-				required="true">
-			
-			</p:inputText>
-		
-	</p:panelGrid>
-		<br />
+			<p:panelGrid columns="2">
+				<h:outputText value="Tipo de género" />
+				<p:inputText value="#{beanGenero.genero.tipoGenero}"
+					requiredMessage="El tipo de género es requerido" required="true">
+
+				</p:inputText>
+
+			</p:panelGrid>
+			<br />
 			<p:commandButton value="Actualizar" update="form"
 				actionListener="#{beanGenero.actionListenerActualizarGenero()}"
 				oncomplete="PF('dlgEditar').hide();">
 			</p:commandButton>
-	</h:form>
+		</h:form>
 
-</p:dialog>
+	</p:dialog>
 
-<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-					<p:commandButton value="Sí" type="button"
-						styleClass="ui-confirmdialog-yes" update="form"
-						icon="ui-icon-check" />
-					<p:commandButton value="No" type="button"
-						styleClass="ui-confirmdialog-no" icon="ui-icon-closethick" />
-</p:confirmDialog>
-</body> 
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		<p:commandButton value="Sí" type="button"
+			styleClass="ui-confirmdialog-yes" update="form" icon="ui-icon-check" />
+		<p:commandButton value="No" type="button"
+			styleClass="ui-confirmdialog-no" icon="ui-icon-closethick" />
+	</p:confirmDialog>
+</body>
 </html>
