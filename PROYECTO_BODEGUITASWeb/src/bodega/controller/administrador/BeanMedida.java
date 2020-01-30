@@ -1,4 +1,4 @@
-package bodega.controller.admin;
+package bodega.controller.administrador;
 
 import java.io.Serializable;
 import java.util.List;
@@ -8,34 +8,33 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-import bodega.model.admin.ManagerBitacora;
-import bodega.model.entities.Bitacora;
+import bodega.model.administrador.ManagerMedida;
+import bodega.model.entities.Medida;
 
 @Named
 @SessionScoped
-public class BeanBitacora implements Serializable {
+public class BeanMedida implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private List<Bitacora> listaBitacora;
+	private List<Medida> listaMedida;
 	@EJB
-	private ManagerBitacora managerBitacora;
-	private Bitacora bitacora;
+	private ManagerMedida managerMedida;
+	private Medida medida;
 
 	@PostConstruct
 	public void inicializar() {
 		try {
-			listaBitacora=managerBitacora.findAllBitacora();
-			//listaMedida = managerMedida.findAllMedidas();
+			listaMedida = managerMedida.findAllMedidas();
 		} catch (Exception e) {
 			JSFUtil.crearMensajeError(e.getMessage());
 		}
-		bitacora=new Bitacora();
-		//medida= new Medida();
+
+		medida= new Medida();
 	}
-/*
+
 	public void actionListenerCargarMedida(Medida med) {
 		try {
 			
@@ -69,22 +68,7 @@ public class BeanBitacora implements Serializable {
 		medida.setTipoMedida("");
 	}
 
-	
-
-	public void actionListenerEliminarMedida(Integer id) {
-		try {
-			managerMedida.eliminarMedida(id);
-			listaMedida=managerMedida.findAllMedidas();
-			JSFUtil.crearMensajeInfo("Su medida ha sido eliminada");
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-			JSFUtil.crearMensajeError("Error al eliminar");
-		}
-
-	}
-
-	public void actionListenerInsertarBitacora() {
+	public void actionListenerInsertarMedida() {
 		try {
 			if (medida.getTipoMedida().length() > 0) {
 				Medida m=new Medida();
@@ -103,6 +87,20 @@ public class BeanBitacora implements Serializable {
 		}
 
 	}
+
+	public void actionListenerEliminarMedida(Integer id) {
+		try {
+			managerMedida.eliminarMedida(id);
+			listaMedida=managerMedida.findAllMedidas();
+			JSFUtil.crearMensajeInfo("Su medida ha sido eliminada");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			JSFUtil.crearMensajeError("Error al eliminar");
+		}
+
+	}
+
 	public List<Medida> getListaMedida() {
 		return listaMedida;
 	}
@@ -117,23 +115,6 @@ public class BeanBitacora implements Serializable {
 
 	public void setMedida(Medida medida) {
 		this.medida = medida;
-	}
-	*/
-
-	public List<Bitacora> getListaBitacora() {
-		return listaBitacora;
-	}
-
-	public void setListaBitacora(List<Bitacora> listaBitacora) {
-		this.listaBitacora = listaBitacora;
-	}
-
-	public Bitacora getBitacora() {
-		return bitacora;
-	}
-
-	public void setBitacora(Bitacora bitacora) {
-		this.bitacora = bitacora;
 	}
 	
 

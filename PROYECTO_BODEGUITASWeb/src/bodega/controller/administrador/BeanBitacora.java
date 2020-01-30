@@ -1,4 +1,4 @@
-package bodega.controller.admin;
+package bodega.controller.administrador;
 
 import java.io.Serializable;
 import java.util.List;
@@ -8,7 +8,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-import bodega.model.admin.ManagerBitacora;
+import bodega.model.administrador.ManagerBitacora;
 import bodega.model.entities.Bitacora;
 
 @Named
@@ -77,7 +77,7 @@ public class BeanBitacora implements Serializable {
 			listaMedida=managerMedida.findAllMedidas();
 			JSFUtil.crearMensajeInfo("Su medida ha sido eliminada");
 		} catch (Exception e) {
-			// TODO: handle exception
+		
 			e.printStackTrace();
 			JSFUtil.crearMensajeError("Error al eliminar");
 		}
