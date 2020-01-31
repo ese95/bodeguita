@@ -29,6 +29,7 @@ public class BeanBitacora implements Serializable {
 		try {
 			listaBitacora=managerBitacora.findAllBitacora();
 			//listaMedida = managerMedida.findAllMedidas();
+			System.out.println("cambios basicos");
 		} catch (Exception e) {
 			JSFUtil.crearMensajeError(e.getMessage());
 		}
