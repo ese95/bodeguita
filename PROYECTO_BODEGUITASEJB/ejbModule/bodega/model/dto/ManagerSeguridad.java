@@ -61,6 +61,7 @@ public class ManagerSeguridad {
 		loginDTO.setIdUsuario(usuario.get(0).getIdUsuario());
 		
 		
+		
 		System.out.println("idUsuario=" + usuario.get(0).getIdUsuario());
 		
 		List<UsuarioRol> rol = managerLogin.findUsuarioRol(usuario.get(0).getIdUsuario());
@@ -71,7 +72,7 @@ public class ManagerSeguridad {
 			if (usuarioRol.getRol().getIdRol().equals(ROL.intValue())) {
 				
 				loginDTO.setTipoUsuario(rol);
-				
+				loginDTO.setIdRolUsuario(usuarioRol.getIdUsuarioRol());
 				System.out.println("ROL -> "+ROL);
 				System.out.println("compara "+rol.get(0).getRol().getIdRol());
 				if (usuarioRol.getRol().getIdRol()== 1) {

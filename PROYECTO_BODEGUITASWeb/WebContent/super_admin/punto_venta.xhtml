@@ -9,7 +9,11 @@
 		type="preRenderView"></f:event>
 
 </f:metadata>
-<h:head></h:head>
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+</h:head>
 <body onload="#{beanPuntoVenta.inicializar()}">
 	<p:growl>
 		<p:autoUpdate></p:autoUpdate>
@@ -100,11 +104,14 @@
 					</p:commandButton>
 					<br />
 					<br />
-					<p:dataTable value="#{beanPuntoVenta.listapv}" var="pv">
-						<p:column headerText="Nombre Punto de Venta" sortBy="#{pv.nombrePtoVenta}" filterBy="#{pv.nombrePtoVenta}">
-							<h:outputText value="#{pv.nombrePtoVenta}"  />
+					<p:dataTable value="#{beanPuntoVenta.listapv}" var="pv"
+						reflow="true">
+						<p:column headerText="Nombre Punto de Venta"
+							sortBy="#{pv.nombrePtoVenta}" filterBy="#{pv.nombrePtoVenta}">
+							<h:outputText value="#{pv.nombrePtoVenta}" />
 						</p:column>
-						<p:column headerText="Correo " sortBy="#{pv.correoPtoVenta}" filterBy="#{pv.correoPtoVenta}">
+						<p:column headerText="Correo " sortBy="#{pv.correoPtoVenta}"
+							filterBy="#{pv.correoPtoVenta}">
 							<h:outputText value="#{pv.correoPtoVenta}" />
 						</p:column>
 						<p:column headerText="Dirección" sortBy="#{pv.direccionPtoVenta}">
@@ -146,20 +153,25 @@
 				<h:outputText value="Nombre Punto de Venta" />
 				<p:inputText value="#{beanPuntoVenta.puntoVenta.nombrePtoVenta}"
 					requiredMessage="El nombre del punto de venta es requerido"
-					required="true" />
+					maxlength="75" required="true" />
 				<h:outputText value="Correo" />
 				<p:inputText value="#{beanPuntoVenta.puntoVenta.correoPtoVenta}"
+					maxlength="120"
 					requiredMessage="El correo del punto de venta es requerido"
 					required="true" />
 				<h:outputText value="Dirección" />
 				<p:inputTextarea
 					value="#{beanPuntoVenta.puntoVenta.direccionPtoVenta}"
+					maxlength="220"
 					requiredMessage="La dirección del punto de venta es requerida"
 					required="true" />
 				<h:outputText value="Teléfono" />
 				<p:inputText maxlength="10"
-					value="#{beanPuntoVenta.puntoVenta.telefonoPtoVenta}">
+					value="#{beanPuntoVenta.puntoVenta.telefonoPtoVenta}"
+					validatorMessage="Teléfono incorrecto, sólo se permite números">
+					<f:validateRegex pattern="[0-9]*" />
 				</p:inputText>
+
 
 			</p:panelGrid>
 			<br />
@@ -180,21 +192,26 @@
 			<p:panelGrid columns="2">
 				<h:outputText value="Nombre" />
 				<p:inputText value="#{beanPuntoVenta.puntoVenta.nombrePtoVenta}"
+					maxlength="75"
 					requiredMessage="El nombre del punto de venta es requerido"
 					required="true" />
 				<h:outputText value="Correo" />
 				<p:inputText value="#{beanPuntoVenta.puntoVenta.correoPtoVenta}"
+					maxlength="120"
 					requiredMessage="El correo del punto de venta es requerido"
 					required="true" />
 				<h:outputText value="Dirección" />
 				<p:inputTextarea
 					value="#{beanPuntoVenta.puntoVenta.direccionPtoVenta}"
+					maxlength="220"
 					requiredMessage="La dirección del punto de venta es requerida"
 					required="true" />
 				<h:outputText value="Teléfono" />
-				<p:inputMask value="#{beanPuntoVenta.puntoVenta.telefonoPtoVenta}"
-					mask="9999999999"></p:inputMask>
-
+				<p:inputText maxlength="10"
+					value="#{beanPuntoVenta.puntoVenta.telefonoPtoVenta}"
+					validatorMessage="Teléfono incorrecto, sólo se permite números">
+					<f:validateRegex pattern="[0-9]*" />
+				</p:inputText>
 			</p:panelGrid>
 			<br />
 			<p:commandButton value="Actualizar" update="form"

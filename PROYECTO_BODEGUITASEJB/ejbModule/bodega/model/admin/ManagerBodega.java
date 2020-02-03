@@ -41,6 +41,16 @@ private ManagerDAO managerDAO;
     	
     }
  
+    @SuppressWarnings("unchecked")
+	public List<Bodega>findAllBodegaByUsuario(Integer id) throws Exception{
+    	try {        	
+        	return managerDAO.findWhere(Bodega.class,"o.usuario.idUsuario="+id,null);
+		} catch (Exception e) {
+			throw new Exception("No existe registro de bodega");
+		}
+    	
+    }
+    
     public Bodega findByIdBodega(Integer id) {
     	
     	try {

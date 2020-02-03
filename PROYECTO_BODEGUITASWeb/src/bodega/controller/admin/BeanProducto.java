@@ -37,7 +37,7 @@ public class BeanProducto implements Serializable {
 	private Integer idCategoria;
 	private Integer idMedida;
 	private UploadedFile uploadedFile;
-	
+
 	@EJB
 	private ManagerProducto managerProd;
 	@EJB
@@ -49,24 +49,24 @@ public class BeanProducto implements Serializable {
 	@PostConstruct
 	public void inicializar() {
 		try {
-			listaProducto=managerProd.findAllProductos();
-			listaCategoria=managerCat.findAllCategorias();
-			listaMedida=managerMed.findAllMedidas();
-				} catch (Exception e) {
+			listaProducto = managerProd.findAllProductos();
+			listaCategoria = managerCat.findAllCategorias();
+			listaMedida = managerMed.findAllMedidas();
+		} catch (Exception e) {
 			JSFUtil.crearMensajeError(e.getMessage());
 		}
-	prod=new Producto();
+		prod = new Producto();
 	}
 
 	public void actionListenerCargarProducto(Producto p) {
 		try {
-			prod=new Producto();
-			Medida med=managerMed.findByIdMedida(p.getMedida().getIdMedida());
-			Categoria cat=managerCat.findByIdCategoria(p.getCategoria().getIdCategoria());
+			prod = new Producto();
+			Medida med = managerMed.findByIdMedida(p.getMedida().getIdMedida());
+			Categoria cat = managerCat.findByIdCategoria(p.getCategoria().getIdCategoria());
 			prod.setCantidadStockProducto(p.getCantidadStockProducto());
 			prod.setCaracteristicasProducto(p.getCaracteristicasProducto());
-			idCategoria=p.getCategoria().getIdCategoria();
-			idMedida=p.getMedida().getIdMedida();
+			idCategoria = p.getCategoria().getIdCategoria();
+			idMedida = p.getMedida().getIdMedida();
 			prod.setIdProducto(p.getIdProducto());
 			prod.setCategoria(cat);
 			prod.setCostoProducto(p.getCostoProducto());
@@ -76,8 +76,8 @@ public class BeanProducto implements Serializable {
 			prod.setMedida(p.getMedida());
 			prod.setNombreProducto(p.getNombreProducto());
 			prod.setPrecioBaseProducto(p.getPrecioBaseProducto());
-			
-				} catch (Exception e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -94,33 +94,39 @@ public class BeanProducto implements Serializable {
 				}
 			} else {
 				System.out.println(System.getProperty("user.dir"));
-				
+
 				InputStream inputstream = new FileInputStream("d:\\foto\\productos.png");
-				
+
 				image = ImageIO.read(inputstream);
 			}
-			
-			if (prod.getNombreProducto().length() > 0 && prod.getPrecioBaseProducto().toString().length()>0  && prod.getCostoProducto().toString().length()>0&& prod.getEstadoProducto().toString().length()>0&&prod.getCantidadStockProducto().toString().length()>0) {
-				
+
+			if (prod.getNombreProducto().length() > 0 && prod.getPrecioBaseProducto().toString().length() > 0
+					&& prod.getCostoProducto().toString().length() > 0
+					&& prod.getEstadoProducto().toString().length() > 0
+					&& prod.getCantidadStockProducto().toString().length() > 0) {
+				if (prod.getPrecioBaseProducto().doubleValue() < prod.getCostoProducto().doubleValue()) {
+
 					String cod64 = encodeToString(image, "png");
-				
-				Producto p=managerProd.findByIdProducto(prod.getIdProducto());
-				p.setCantidadStockProducto(prod.getCantidadStockProducto());
-				p.setCaracteristicasProducto(prod.getCaracteristicasProducto());	
-				p.setCostoProducto(prod.getCostoProducto());
-				p.setDescripcionProducto(prod.getDescripcionProducto());
-				p.setEstadoProducto(prod.getEstadoProducto());
-				p.setImagenProducto(cod64);
-				p.setCategoria(managerCat.findByIdCategoria(idCategoria));
-				p.setMedida(managerMed.findByIdMedida(idMedida));
-				p.setNombreProducto(prod.getNombreProducto());
-				p.setPrecioBaseProducto(prod.getPrecioBaseProducto());
-				
-				managerProd.actualizarProducto(p);
-				listaProducto=managerProd.findAllProductos();
-				
-		
-				JSFUtil.crearMensajeInfo("Actualizado con éxito");
+
+					Producto p = managerProd.findByIdProducto(prod.getIdProducto());
+					p.setCantidadStockProducto(prod.getCantidadStockProducto());
+					p.setCaracteristicasProducto(prod.getCaracteristicasProducto());
+					p.setCostoProducto(prod.getCostoProducto());
+					p.setDescripcionProducto(prod.getDescripcionProducto());
+					p.setEstadoProducto(prod.getEstadoProducto());
+					p.setImagenProducto(cod64);
+					p.setCategoria(managerCat.findByIdCategoria(idCategoria));
+					p.setMedida(managerMed.findByIdMedida(idMedida));
+					p.setNombreProducto(prod.getNombreProducto());
+					p.setPrecioBaseProducto(prod.getPrecioBaseProducto());
+
+					managerProd.actualizarProducto(p);
+					listaProducto = managerProd.findAllProductos();
+
+					JSFUtil.crearMensajeInfo("Actualizado con éxito");
+				} else {
+					JSFUtil.crearMensajeError("El costo debe ser mayor que el precio base");
+				}
 			} else {
 				JSFUtil.crearMensajeError("Debe ingresar todos los campos");
 			}
@@ -142,7 +148,7 @@ public class BeanProducto implements Serializable {
 		prod.setMedida(null);
 		prod.setNombreProducto("");
 		prod.setPrecioBaseProducto(null);
-		}
+	}
 
 	public void actionListenerInsertarProducto() {
 		try {
@@ -156,18 +162,22 @@ public class BeanProducto implements Serializable {
 				}
 			} else {
 				System.out.println(System.getProperty("user.dir"));
-				
+
 				InputStream inputstream = new FileInputStream("d:\\foto\\productos.png");
-				
+
 				image = ImageIO.read(inputstream);
 			}
-			
-			if (prod.getNombreProducto().length() > 0 && prod.getPrecioBaseProducto().toString().length()>0  && prod.getCostoProducto().toString().length()>0&& prod.getEstadoProducto().toString().length()>0&&prod.getCantidadStockProducto().toString().length()>0) {
-				
+
+			if (prod.getNombreProducto().length() > 0 && prod.getPrecioBaseProducto().toString().length() > 0
+					&& prod.getCostoProducto().toString().length() > 0
+					&& prod.getEstadoProducto().toString().length() > 0
+					&& prod.getCantidadStockProducto().toString().length() > 0) {
+
+				if (prod.getPrecioBaseProducto().doubleValue() < prod.getCostoProducto().doubleValue()) {
 					String cod64 = encodeToString(image, "png");
-					Producto p=new Producto();
+					Producto p = new Producto();
 					p.setCantidadStockProducto(prod.getCantidadStockProducto());
-					p.setCaracteristicasProducto(prod.getCaracteristicasProducto());	
+					p.setCaracteristicasProducto(prod.getCaracteristicasProducto());
 					p.setCostoProducto(prod.getCostoProducto());
 					p.setDescripcionProducto(prod.getDescripcionProducto());
 					p.setEstadoProducto(prod.getEstadoProducto());
@@ -176,25 +186,25 @@ public class BeanProducto implements Serializable {
 					p.setMedida(managerMed.findByIdMedida(idMedida));
 					p.setNombreProducto(prod.getNombreProducto());
 					p.setPrecioBaseProducto(prod.getPrecioBaseProducto());
-					
+
 					managerProd.insertarUsuario(p);
 					listaProducto = managerProd.findAllProductos();
 					limpiarProducto();
 					/*
-					Genero gen=managerGenero.findByIdGeneros(idGenero);
-					u.setGenero(gen);	
-					Rol rol=managerRol.findByIdRol(idRol);
-					u.setImagenUsuario(cod64);
-					u.setNombreUsuario(user.getNombreUsuario());
-					
-					u.setTelefonoUsuario(user.getTelefonoUsuario());
-					managerUser.insertarUsuario(u);
-				    listaUser=managerUser.findAllUsuarios();
-					limpiarUsuario();
-					*/
+					 * Genero gen=managerGenero.findByIdGeneros(idGenero); u.setGenero(gen); Rol
+					 * rol=managerRol.findByIdRol(idRol); u.setImagenUsuario(cod64);
+					 * u.setNombreUsuario(user.getNombreUsuario());
+					 * 
+					 * u.setTelefonoUsuario(user.getTelefonoUsuario());
+					 * managerUser.insertarUsuario(u); listaUser=managerUser.findAllUsuarios();
+					 * limpiarUsuario();
+					 */
 					JSFUtil.crearMensajeInfo("Insertado con éxito");
 
-				
+				} else {
+					JSFUtil.crearMensajeError("El precio costo debe ser mayor que el precio base");
+				}
+
 			} else {
 				JSFUtil.crearMensajeError("Debe ingresar todos los campos");
 			}
@@ -220,11 +230,12 @@ public class BeanProducto implements Serializable {
 		}
 		return imageString;
 	}
+
 	public void actionListenerEliminarProducto(Integer id) {
 		try {
-			
+
 			managerProd.eliminarProducto(id);
-			listaProducto=managerProd.findAllProductos();
+			listaProducto = managerProd.findAllProductos();
 			JSFUtil.crearMensajeInfo("Su producto ha sido eliminado");
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -234,7 +245,6 @@ public class BeanProducto implements Serializable {
 
 	}
 
-	
 	public UploadedFile getUploadedFile() {
 		return uploadedFile;
 	}

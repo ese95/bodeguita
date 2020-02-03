@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 
 
 import bodega.model.entities.Rol;
+import bodega.model.entities.UsuarioRol;
 import bodega.model.manager.ManagerDAO;
 
 /**
@@ -41,8 +42,18 @@ private ManagerDAO managerDAO;
     	
     }
  
+    @SuppressWarnings("unchecked")
+   	public List<Rol>findAllRolADM() throws Exception{
+       	try {        	
+           //	return managerDAO.findAll(Rol.class);
+        	return managerDAO.findWhere(Rol.class, "o.idRol<=3", null);
+   		} catch (Exception e) {
+   			throw new Exception("No existe registro de roles");
+   		}
+       	
+       }
     public Rol findByIdRol(Integer id) {
-    	
+    	System.out.println("id en el manager "+id);
     	try {
 			return (Rol) managerDAO.findById(Rol.class, id);
 		} catch (Exception e) {

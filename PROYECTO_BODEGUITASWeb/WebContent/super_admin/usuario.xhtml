@@ -10,7 +10,9 @@
 
 </f:metadata>
 
-<h:head></h:head>
+<h:head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" /></h:head>
 <body onload="#{beanUsuario.inicializar()}">
 	<p:growl>
 		<p:autoUpdate></p:autoUpdate>
@@ -109,16 +111,19 @@
 							<h:graphicImage value="data:image/jpg;base64,#{u.imagenUsuario}"
 								width="90" />
 						</p:column>
-						<p:column headerText="Nombre " filterBy="#{u.nombreUsuario}" sortBy="#{u.nombreUsuario}">
+						<p:column headerText="Nombre " filterBy="#{u.nombreUsuario}"
+							sortBy="#{u.nombreUsuario}">
 							<h:outputText value="#{u.nombreUsuario}" />
 						</p:column>
-						<p:column headerText="Apellido" filterBy="#{u.apellidoUsuario}" sortBy="#{u.apellidoUsuario}">
+						<p:column headerText="Apellido" filterBy="#{u.apellidoUsuario}"
+							sortBy="#{u.apellidoUsuario}">
 							<h:outputText value="#{u.apellidoUsuario}" />
 						</p:column>
 						<p:column headerText="Cédula" filterBy="#{u.cedulaUsuario}">
 							<h:outputText value="#{u.cedulaUsuario}" />
 						</p:column>
-						<p:column headerText="Correo" sortBy="#{u.correoUsuario}" filterBy="#{u.correoUsuario}">
+						<p:column headerText="Correo" sortBy="#{u.correoUsuario}"
+							filterBy="#{u.correoUsuario}">
 							<h:outputText value="#{u.correoUsuario}" />
 						</p:column>
 
@@ -132,7 +137,8 @@
 						<p:column headerText="Teléfono">
 							<h:outputText value="#{u.telefonoUsuario}" />
 						</p:column>
-						<p:column headerText="Fecha Nacimiento" sortBy="#{u.fechaNacUsuario}">
+						<p:column headerText="Fecha Nacimiento"
+							sortBy="#{u.fechaNacUsuario}">
 							<h:outputText value="#{u.fechaNacUsuario}" />
 						</p:column>
 						<p:column headerText="Opciones">
@@ -172,11 +178,18 @@
 				<h:outputText value="Nombre" />
 				<p:inputText value="#{beanUsuario.user.nombreUsuario}"
 					requiredMessage="El nombre del usuario es requerido"
-					required="true" />
+					required="true" maxlength="60"
+					validatorMessage="Nombre incorrecto, máximo dos nombres, sólo se permite letras">
+					<f:validateRegex pattern="[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]+" />
+				</p:inputText>
+
 				<h:outputText value="Apellido" />
 				<p:inputText value="#{beanUsuario.user.apellidoUsuario}"
 					requiredMessage="El apellido del usuario es requerido"
-					required="true" />
+					required="true" maxlength="60"
+					validatorMessage="Apellido incorrecto, sólo se permite letras">
+					<f:validateRegex pattern="[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]+" />
+				</p:inputText>
 
 				<h:outputText value="Género" />
 				<p:selectOneMenu required="true"
@@ -190,11 +203,15 @@
 				<h:outputText value="Cédula " />
 				<p:inputText required="true"
 					value="#{beanUsuario.user.cedulaUsuario}" maxlength="10"
-					requiredMessage="La cédula es requerida" />
+					requiredMessage="La cédula es requerida"
+					validatorMessage="Cédula Incorrecta, debe ingresar solo números">
+					<f:validateRegex pattern="([0-9]*)" />
+				</p:inputText>
+
 				<h:outputText value="Correo" />
 				<p:inputText value="#{beanUsuario.user.correoUsuario}"
 					requiredMessage="El correo del usuario es requerido"
-					required="true" />
+					maxlength="119" required="true" />
 				<h:outputText value="Contraseña" />
 				<p:password value="#{beanUsuario.user.claveUsuario}" feedback="true"
 					promptLabel="Nivel de seguridad" weakLabel="Baja" goodLabel="Media"
@@ -211,12 +228,13 @@
 					required="true" locale="es"></p:calendar>
 				<h:outputText value="Teléfono" />
 				<p:inputText maxlength="10"
-					value="#{beanUsuario.user.telefonoUsuario}" />
+					value="#{beanUsuario.user.telefonoUsuario}"
+					validatorMessage="Número de teléfono Incorrecto, debe ingresar solo números">
+					<f:validateRegex pattern="([0-9]*)" />
+				</p:inputText>
 				<h:outputText value="Imagen" />
 				<p:fileUpload value="#{beanUsuario.uploadedFile}" mode="simple">
 				</p:fileUpload>
-
-
 
 			</p:panelGrid>
 			<br />
@@ -238,11 +256,19 @@
 				<h:outputText value="Nombre" />
 				<p:inputText value="#{beanUsuario.user.nombreUsuario}"
 					requiredMessage="El nombre del usuario es requerido"
-					required="true" />
+					required="true" maxlength="60"
+					validatorMessage="Nombre incorrecto, máximo dos nombres, sólo se permite letras">
+					<f:validateRegex pattern="[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]+" />
+				</p:inputText>
+
 				<h:outputText value="Apellido" />
 				<p:inputText value="#{beanUsuario.user.apellidoUsuario}"
 					requiredMessage="El apellido del usuario es requerido"
-					required="true" />
+					required="true" maxlength="60"
+					validatorMessage="Apellido incorrecto, sólo se permite letras">
+					<f:validateRegex pattern="[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]+" />
+				</p:inputText>
+
 				<h:outputText value="Género" />
 				<p:selectOneMenu required="true"
 					requiredMessage="Seleccione el género del usuario"
@@ -255,11 +281,16 @@
 				<h:outputText value="Cédula " />
 				<p:inputText required="true"
 					value="#{beanUsuario.user.cedulaUsuario}" maxlength="10"
-					requiredMessage="La cédula es requerida" />
+					requiredMessage="La cédula es requerida"
+					validatorMessage="Cédula Incorrecta, debe ingresar solo números">
+					<f:validateRegex pattern="([0-9]*)" />
+				</p:inputText>
+
 				<h:outputText value="Correo" />
 				<p:inputText value="#{beanUsuario.user.correoUsuario}"
 					requiredMessage="El correo del usuario es requerido"
-					required="true" />
+					maxlength="119" required="true" />
+
 
 				<h:outputText value="Dirección" />
 				<p:inputTextarea value="#{beanUsuario.user.direccionUsuario}"
@@ -270,10 +301,17 @@
 					required="true" locale="es"></p:calendar>
 				<h:outputText value="Teléfono" />
 				<p:inputText maxlength="10"
-					value="#{beanUsuario.user.telefonoUsuario}" />
+					value="#{beanUsuario.user.telefonoUsuario}"
+					validatorMessage="Número de teléfono Incorrecto, debe ingresar solo números">
+					<f:validateRegex pattern="([0-9]*)" />
+				</p:inputText>
+
 				<h:outputText value="Imagen" />
 				<p:fileUpload value="#{beanUsuario.uploadedFile}" mode="simple">
 				</p:fileUpload>
+
+
+
 			</p:panelGrid>
 			<br />
 			<p:commandButton value="Actualizar" update="form"

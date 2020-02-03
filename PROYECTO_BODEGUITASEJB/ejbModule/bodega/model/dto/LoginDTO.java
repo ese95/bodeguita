@@ -15,6 +15,7 @@ public class LoginDTO {
 	private List<UsuarioRol> tipoUsuario;
 	private String rutaAcceso;
 	private int idUsuario;
+	private int idRolUsuario;
 	
 	public String getUsuario() {
 		return usuario;
@@ -48,6 +49,12 @@ public class LoginDTO {
 	}
 	public void setIdUsuario(int idUsuario) {
 		this.idUsuario = idUsuario;
+	}
+	public int getIdRolUsuario() {
+		return idRolUsuario;
+	}
+	public void setIdRolUsuario(int idRolUsuario) {
+		this.idRolUsuario = idRolUsuario;
 	}
 	
 }

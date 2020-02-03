@@ -9,7 +9,11 @@
 		type="preRenderView"></f:event>
 
 </f:metadata>
-<h:head></h:head>
+<h:head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+</h:head>
 <body onload="#{beanUsuario.inicializar()}">
 	<p:growl>
 		<p:autoUpdate></p:autoUpdate>
@@ -99,7 +103,7 @@
 					</p:commandButton>
 					<br />
 					<br />
-					<p:dataTable value="#{beanProducto.listaProducto}" var="p">
+					<p:dataTable value="#{beanProducto.listaProducto}" var="p" reflow="true">
 						<p:column headerText="Foto">
 							<h:graphicImage value="data:image/jpg;base64,#{p.imagenProducto}"
 								width="90" />
@@ -204,21 +208,30 @@
 					<f:selectItems value="#{beanProducto.listaCategoria}" var="r"
 						itemLabel="#{r.nombreCategoria}" itemValue="#{r.idCategoria}" />
 				</p:selectOneMenu>
-
-
 				<h:outputText value="Precio base" />
-				<p:inputText value="#{beanProducto.prod.precioBaseProducto}"
-					requiredMessage="El precio del producto es requerido"
-					required="true" />
+				<p:inputNumber value="#{beanProducto.prod.precioBaseProducto}" 
+				requiredMessage="El precio del producto es requerido"
+				required="true" minValue="0" maxValue="100000" decimalPlaces="2"
+				placeholder="0,00"
+				>
+				</p:inputNumber>
+				
 				<h:outputText value="Costo final" />
-				<p:inputText value="#{beanProducto.prod.costoProducto}"
-					requiredMessage="El costo del producto es requerido"
-					required="true" />
+				<p:inputNumber value="#{beanProducto.prod.costoProducto}" 
+				requiredMessage="El costo del producto es requerido"
+				required="true" minValue="0" maxValue="100000" decimalPlaces="2"
+				placeholder="0,00"
+				>
+				</p:inputNumber>
+				
 				<h:outputText value="Cantidad" />
-				<p:inputText value="#{beanProducto.prod.cantidadStockProducto}"
-					requiredMessage="El cantidad del producto es requerida"
-					required="true" />
-
+				<p:inputNumber value="#{beanProducto.prod.cantidadStockProducto}" 
+				requiredMessage="La cantidad del producto es requerido"
+				required="true" minValue="0" maxValue="10000" decimalPlaces="0"
+				placeholder="0"
+				>
+				</p:inputNumber>
+				
 				<h:outputText value="Imagen" />
 				<p:fileUpload value="#{beanProducto.uploadedFile}" mode="simple">
 				</p:fileUpload>
@@ -233,7 +246,7 @@
 
 	</p:dialog>
 
-	<p:dialog header="Editar Punto de Venta" widgetVar="dlgEditar">
+	<p:dialog header="Editar Producto" widgetVar="dlgEditar">
 		<h:form id="formEditar">
 			<p:growl>
 				<p:autoUpdate />
@@ -279,7 +292,7 @@
 
 				<h:outputText value="Precio base" />
 				<p:inputText value="#{beanProducto.prod.precioBaseProducto}"
-					requiredMessage="El precio del producto es requerido"
+					requiredMessage="El precio del producto es requerido" 
 					required="true" />
 				<h:outputText value="Costo final" />
 				<p:inputText value="#{beanProducto.prod.costoProducto}"

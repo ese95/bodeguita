@@ -64,6 +64,7 @@ public class BeanLogin implements Serializable {
 				if (correo.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 						+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")) {
 					loginDTO = managerSeguridad.accederSistemaRol(correo, password, idTipoUsuario);
+					
 					idUsuario=loginDTO.getIdUsuario();
 					// verificamos el acceso del usuario:
 					tipoUsuario = loginDTO.getTipoUsuario();
@@ -259,6 +260,14 @@ public class BeanLogin implements Serializable {
 
 	public void setIdTipoUsuario(int idTipoUsuario) {
 		this.idTipoUsuario = idTipoUsuario;
+	}
+
+	public LoginDTO getLoginDTO() {
+		return loginDTO;
+	}
+
+	public void setLoginDTO(LoginDTO loginDTO) {
+		this.loginDTO = loginDTO;
 	}
 
 

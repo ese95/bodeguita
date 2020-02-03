@@ -9,7 +9,11 @@
 		type="preRenderView"></f:event>
 
 </f:metadata>
-<h:head></h:head>
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+</h:head>
 <body onload="#{beanCategoria.inicializar()}">
 	<p:growl>
 		<p:autoUpdate></p:autoUpdate>
@@ -98,7 +102,8 @@
 					<br />
 					<br />
 					<p:dataTable value="#{beanCategoria.listaCategoria}" var="c">
-						<p:column headerText="Nombre categoría" sortBy="#{c.nombreCategoria}" filterBy="#{c.nombreCategoria}">
+						<p:column headerText="Nombre categoría"
+							sortBy="#{c.nombreCategoria}" filterBy="#{c.nombreCategoria}">
 							<h:outputText value="#{c.nombreCategoria}" />
 						</p:column>
 						<p:column headerText="Estado " sortBy="#{c.estadoCategoria}">
@@ -138,9 +143,12 @@
 			<p:panelGrid columns="2">
 				<h:outputText value="Nombre Categoría" />
 				<p:inputText value="#{beanCategoria.categoria.nombreCategoria}"
-					requiredMessage="El Nombre Categoría es requerido" required="true">
-
+					requiredMessage="El Nombre Categoría es requerido" required="true" maxlength="45"
+					validatorMessage="Categoría incorrecta, sólo se permite letras">
+					<f:validateRegex pattern="[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]+" />
 				</p:inputText>
+
+
 				<h:outputText value="Estado" />
 				<p:selectOneRadio id="estado"
 					value="#{beanCategoria.categoria.estadoCategoria}" required="true"
@@ -167,9 +175,11 @@
 			<p:panelGrid columns="2">
 				<h:outputText value="Nombre Categoría" />
 				<p:inputText value="#{beanCategoria.categoria.nombreCategoria}"
-					requiredMessage="El Nombre Categoría es requerido" required="true">
-
+					requiredMessage="El Nombre Categoría es requerido" required="true" maxlength="45"
+					validatorMessage="Categoría incorrecta, sólo se permite letras">
+					<f:validateRegex pattern="[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]+" />
 				</p:inputText>
+
 				<h:outputText value="Estado" />
 				<p:selectOneRadio id="estado"
 					value="#{beanCategoria.categoria.estadoCategoria}" required="true"

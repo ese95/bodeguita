@@ -41,6 +41,16 @@ private ManagerDAO managerDAO;
     	
     }
  
+    @SuppressWarnings("unchecked")
+   	public List<UsuarioRol>findAllUsuarioRolADM() throws Exception{
+       	try {        	
+           	//return managerDAO.findAll(UsuarioRol.class);
+           	return managerDAO.findWhere(UsuarioRol.class, "o.rol.idRol<=3", null);
+   		} catch (Exception e) {
+   			throw new Exception("No existe registro de Usuario Rol");
+   		}
+       	
+       }
     public UsuarioRol findByIdUsuarioRol(Integer id) {
     	
     	try {

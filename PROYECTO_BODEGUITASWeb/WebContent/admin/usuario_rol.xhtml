@@ -35,15 +35,10 @@
 					<p:panelMenu>
 						<p:submenu label="Usuario">
 							<p:menuitem value="Usuario" action="#{beanUsuario.irUsuario()}"
-								update="@form" icon="fa fa-user" />
-							<p:menuitem value="Rol" action="#{beanUsuario.irRol()}"
-								update="@form" icon="fa fa-address-book" />
-							<p:menuitem value="Género" action="#{beanUsuario.irGenero()}"
-								update="@form" icon="fa fa-address-card" />
+								update="@form" icon="fa fa-user" />			
 							<p:menuitem value="Usuario - Rol"
 								action="#{beanUsuario.irUsuarioRol()}" update="@form"
 								icon="fa fa-book" />
-
 						</p:submenu>
 						<p:submenu label="Producto">
 							<p:menuitem value="Producto" action="#{beanUsuario.irProducto()}"
@@ -100,7 +95,7 @@
 					<br />
 					<br />
 					<p:dataTable reflow="true"
-						value="#{beanUsuarioRol.listaUsuarioRol}" var="ur">
+						value="#{beanUsuarioRol.listaUsuarioRolADM}" var="ur">
 
 						<p:column headerText="Cédula" filterBy="#{ur.usuario.cedulaUsuario}" sortBy="#{ur.usuario.cedulaUsuario}">
 							<h:outputText value="#{ur.usuario.cedulaUsuario} " />
@@ -122,17 +117,18 @@
 						<p:column headerText="Rol">
 							<h:outputText value="#{ur.rol.tipoRol}" />
 							<h:inputHidden value="#{ur.rol.idRol}" />
+<!-- 								<h:inputHidden value="#{ur.rol.idRol}" /> -->
 						</p:column>
 						<p:column headerText="Opciones">
 							<p:commandButton icon="fa fa-edit" update=":formEditar"
 								title="Editar"
-								actionListener="#{beanUsuarioRol.actionListenerCargarUsuarioRol(ur)}"
+								actionListener="#{beanUsuarioRol.actionListenerCargarUsuarioRolADM(ur)}"
 								oncomplete="PF('dlgEditar').show();">
 							</p:commandButton>
 
 							<p:commandButton update="form" icon="fa fa-trash"
 								title="Eliminar"
-								actionListener="#{beanUsuarioRol.actionListenerEliminarUsuarioRol(ur.idUsuarioRol)}">
+								actionListener="#{beanUsuarioRol.actionListenerEliminarUsuarioRolADM(ur.idUsuarioRol)}">
 								<p:confirm header="Confirmación" message="¿Desea eliminar?"
 									icon="fa fa-info"></p:confirm>
 							</p:commandButton>
@@ -165,14 +161,14 @@
 				<p:selectOneMenu required="true" requiredMessage="Seleccione el rol"
 					value="#{beanUsuarioRol.idRol}">
 					<f:selectItem itemLabel="Seleccione" itemValue="" />
-					<f:selectItems value="#{beanUsuarioRol.listaRol}" var="r"
+					<f:selectItems value="#{beanUsuarioRol.listaRolADM}" var="r"
 						itemLabel="#{r.tipoRol} " itemValue="#{r.idRol}" />
 				</p:selectOneMenu>
 
 			</p:panelGrid>
 			<br />
 			<p:commandButton value="Crear" update="form"
-				actionListener="#{beanUsuarioRol.actionListenerInsertarUsuario()}"
+				actionListener="#{beanUsuarioRol.actionListenerInsertarUsuarioADM()}"
 				oncomplete="PF('dlgCrear').hide();">
 			</p:commandButton>
 		</h:form>
@@ -187,26 +183,21 @@
 
 			<p:panelGrid columns="2">
 				<h:outputText value="Usuario" />
-				<p:selectOneMenu required="true"
-					requiredMessage="Seleccione el usuario"
-					value="#{beanUsuarioRol.idUser}">
-					<f:selectItem itemLabel="Seleccione" itemValue="" />
-					<f:selectItems value="#{beanUsuarioRol.listaUsuario}" var="r"
-						itemLabel="#{r.nombreUsuario} - #{r.apellidoUsuario}"
-						itemValue="#{r.idUsuario}" />
-				</p:selectOneMenu>
+			
+				<h:outputLabel value="#{beanUsuarioRol.uRol.usuario.nombreUsuario} #{beanUsuarioRol.uRol.usuario.apellidoUsuario}" />
+	
 				<h:outputText value="Rol" />
 				<p:selectOneMenu required="true" requiredMessage="Seleccione el rol"
 					value="#{beanUsuarioRol.idRol}">
 					<f:selectItem itemLabel="Seleccione" itemValue="" />
-					<f:selectItems value="#{beanUsuarioRol.listaRol}" var="r"
+					<f:selectItems value="#{beanUsuarioRol.listaRolADM}" var="r"
 						itemLabel="#{r.tipoRol} " itemValue="#{r.idRol}" />
 				</p:selectOneMenu>
 
 			</p:panelGrid>
 			<br />
 			<p:commandButton value="Actualizar" update="form"
-				actionListener="#{beanUsuarioRol.actionListenerActualizarUsuarioRol()}"
+				actionListener="#{beanUsuarioRol.actionListenerActualizarUsuarioRolADM()}"
 				oncomplete="PF('dlgEditar').hide();">
 			</p:commandButton>
 		</h:form>

@@ -9,7 +9,11 @@
 		type="preRenderView"></f:event>
 
 </f:metadata>
-<h:head></h:head>
+<h:head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+</h:head>
 <body onload="#{beanRol.inicializar()}">
 	<p:growl>
 		<p:autoUpdate></p:autoUpdate>
@@ -135,9 +139,12 @@
 			<p:panelGrid columns="2">
 				<h:outputText value="Tipo de Rol" />
 				<p:inputText value="#{beanRol.rol.tipoRol}"
-					requiredMessage="El tipo de rol es requerido" required="true">
-
+					requiredMessage="El tipo de rol es requerido" maxlength="30" required="true"
+					validatorMessage="Tipo de rol incorrecto, sólo se permite letras">
+					<f:validateRegex pattern="[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]+" />
 				</p:inputText>
+
+		
 
 			</p:panelGrid>
 			<br />
@@ -158,8 +165,9 @@
 			<p:panelGrid columns="2">
 				<h:outputText value="Tipo de Rol" />
 				<p:inputText value="#{beanRol.rol.tipoRol}"
-					requiredMessage="El tipo de rol es requerido" required="true">
-
+					requiredMessage="El tipo de rol es requerido" maxlength="30" required="true"
+					validatorMessage="Apellido incorrecto, sólo se permite letras">
+					<f:validateRegex pattern="[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]+" />
 				</p:inputText>
 
 			</p:panelGrid>
