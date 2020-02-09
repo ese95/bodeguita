@@ -15,10 +15,12 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.model.UploadedFile;
 
+import bodega.controller.login.BeanLogin;
 import bodega.model.admin.ManagerGenero;
 import bodega.model.admin.ManagerRol;
 import bodega.model.admin.ManagerUsuario;
@@ -49,6 +51,10 @@ public class BeanUsuario implements Serializable {
 	@EJB
 	private ManagerRol managerRol;
 	private Usuario user;
+	
+
+	@Inject
+	BeanLogin login;
 
 	@PostConstruct
 	public void inicializar() {
@@ -266,9 +272,13 @@ public class BeanUsuario implements Serializable {
 
 	public void actionListenerEliminarUsuario(Integer id) {
 		try {
+			if (login.getLoginDTO().getIdUsuario()==id) {
+				JSFUtil.crearMensajeError("No debe eliminar el usuario en el que ha iniciado sesión");
+			}else {
 			managerUser.eliminarUsuario(id);
 			listaUser = managerUser.findAllUsuarios();
 			JSFUtil.crearMensajeInfo("Su usuario ha sido eliminado");
+			}
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -277,6 +287,39 @@ public class BeanUsuario implements Serializable {
 
 	}
 
+	public void actionListenerEliminarUsuarioADMIN(Integer id) {
+		try {
+			if (login.getLoginDTO().getIdUsuario()==id) {
+				JSFUtil.crearMensajeError("No debe eliminar el usuario en el que ha iniciado sesión");
+			}else {
+			managerUser.eliminarUsuario(id);
+			listaUser = managerUser.findAllUsuarios();
+			JSFUtil.crearMensajeInfo("Su usuario ha sido eliminado");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			JSFUtil.crearMensajeError("Error al eliminar");
+		}
+
+	}
+
+//	public void actionListenerEliminarUsuarioADMIN(Integer id) {
+//		try {
+//			if (login.getLoginDTO().getIdUsuario() == id) {
+//				JSFUtil.crearMensajeError("No debe eliminar el usuario en el que ha iniciado sesión");
+//			} else {
+//				managerUser.eliminarUsuario(id);
+//				listaUser = managerUser.findAllUsuarios();
+//				JSFUtil.crearMensajeInfo("Su usuario ha sido eliminado");
+//			}
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			e.printStackTrace();
+//			JSFUtil.crearMensajeError("Error al eliminar");
+//		}
+//
+//	}
 	public int CalcularEdad(Calendar fechaNac) {
 
 		Calendar fechaActual = Calendar.getInstance();

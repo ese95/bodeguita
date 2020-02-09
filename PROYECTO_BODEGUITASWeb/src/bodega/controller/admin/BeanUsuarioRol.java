@@ -73,7 +73,7 @@ public class BeanUsuarioRol implements Serializable {
 			Rol r = managerRol.findByIdRol(ur.getRol().getIdRol());
 			uRol.setIdUsuarioRol(ur.getUsuario().getIdUsuario());
 			// uRol.se
-			
+
 			idUsuarioRol = ur.getIdUsuarioRol();
 			idUser = ur.getUsuario().getIdUsuario();
 			idRol = ur.getRol().getIdRol();
@@ -94,7 +94,7 @@ public class BeanUsuarioRol implements Serializable {
 			uRol.setIdUsuarioRol(ur.getUsuario().getIdUsuario());
 			idUser = ur.getUsuario().getIdUsuario();
 			idRol = ur.getRol().getIdRol();
-			
+
 			uRol.setRol(r);
 			uRol.setUsuario(user);
 		} catch (Exception e) {
@@ -108,13 +108,37 @@ public class BeanUsuarioRol implements Serializable {
 			if (idUsuarioRol.equals(login.getLoginDTO().getIdRolUsuario())) {
 				JSFUtil.crearMensajeError("No debe editar el usuario en el que está iniciado sesión");
 			} else {
+				boolean validar = false;
+				int cont = 0;
+				int cont1 = 0;
+				
 				UsuarioRol ur = managerUsuarioRol.findByIdUsuarioRol(idUsuarioRol);
 
 				ur.setRol(managerRol.findByIdRol(idRol));
 				ur.setUsuario(managerUser.findByIdUsuario(idUser));
+				
+				
+				
+				for (UsuarioRol u : listaUsuarioRol) {
+					if (u.getRol().getIdRol().equals(ur.getRol().getIdRol())
+							&& u.getUsuario().getIdUsuario().equals(ur.getUsuario().getIdUsuario())) {
+						validar = false;
+						cont++;
+
+					} else {
+						validar = true;
+						cont1++;
+					}
+				}
+				System.out.println("cont " + cont);
+				System.out.println("cont2 " + cont1);
+				if (validar && cont == 0) {
 				managerUsuarioRol.actualizarUsuarioRol(ur);
 				listaUsuarioRol = managerUsuarioRol.findAllUsuarioRol();
 				JSFUtil.crearMensajeInfo("Actualizado con éxito");
+				} else {
+					JSFUtil.crearMensajeError("No se ha podido actualizar debido ha que ya existe");
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -129,6 +153,11 @@ public class BeanUsuarioRol implements Serializable {
 			if (idUsuarioRol.equals(login.getLoginDTO().getIdRolUsuario())) {
 				JSFUtil.crearMensajeError("No debe editar el usuario en el que está iniciado sesión");
 			} else {
+				
+				boolean validar = false;
+				int cont = 0;
+				int cont1 = 0;
+				
 				UsuarioRol ur = managerUsuarioRol.findByIdUsuarioRol(idUsuarioRol);
 				Rol r = managerRol.findByIdRol(idRol);
 				System.out.println("r " + r.getTipoRol());
@@ -136,9 +165,32 @@ public class BeanUsuarioRol implements Serializable {
 				System.out.println("rol xx" + ur.getRol().getTipoRol());
 				ur.setUsuario(managerUser.findByIdUsuario(idUser));
 				System.out.println("ur " + ur.getUsuario().getApellidoUsuario());
-				managerUsuarioRol.actualizarUsuarioRol(ur);
-				listaUsuarioRolADM = managerUsuarioRol.findAllUsuarioRolADM();
-				JSFUtil.crearMensajeInfo("Actualizado con éxito");
+				
+				
+				for (UsuarioRol u : listaUsuarioRolADM) {
+					if (u.getRol().getIdRol().equals(ur.getRol().getIdRol())
+							&& u.getUsuario().getIdUsuario().equals(ur.getUsuario().getIdUsuario())) {
+						validar = false;
+						cont++;
+
+					} else {
+						validar = true;
+						cont1++;
+					}
+				}
+				System.out.println("cont " + cont);
+				System.out.println("cont2 " + cont1);
+				
+				
+				if (validar && cont == 0) {
+					managerUsuarioRol.actualizarUsuarioRol(ur);
+					listaUsuarioRolADM = managerUsuarioRol.findAllUsuarioRolADM();
+					JSFUtil.crearMensajeInfo("Actualizado con éxito");
+					} else {
+						JSFUtil.crearMensajeError("No se ha podido actualizar debido ha que ya existe");
+					}
+				
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -152,19 +204,41 @@ public class BeanUsuarioRol implements Serializable {
 		uRol.setUsuario(null);
 	}
 
+
 	public void actionListenerInsertarUsuario() {
 		try {
 			// if ( uRol.ge) {
-
+			boolean validar = false;
+			int cont = 0;
+			int cont1 = 0;
 			UsuarioRol ur = new UsuarioRol();
 
 			ur.setRol(managerRol.findByIdRol(idRol));
 			ur.setUsuario(managerUser.findByIdUsuario(idUser));
-			managerUsuarioRol.insertarUsuarioRol(ur);
+			for (UsuarioRol u : listaUsuarioRol) {
+				if (u.getRol().getIdRol().equals(ur.getRol().getIdRol())
+						&& u.getUsuario().getIdUsuario().equals(ur.getUsuario().getIdUsuario())) {
 
-			listaUsuarioRol = managerUsuarioRol.findAllUsuarioRol();
-			limpiarUsuarioRol();
-			JSFUtil.crearMensajeInfo("Insertado con éxito");
+					validar = false;
+					cont++;
+
+				} else {
+					validar = true;
+					cont1++;
+				}
+
+			}
+			System.out.println("cont " + cont);
+			System.out.println("cont2 " + cont1);
+			if (validar && cont == 0) {
+				managerUsuarioRol.insertarUsuarioRol(ur);
+
+				listaUsuarioRol = managerUsuarioRol.findAllUsuarioRol();
+				limpiarUsuarioRol();
+				JSFUtil.crearMensajeInfo("Insertado con éxito");
+			} else {
+				JSFUtil.crearMensajeError("No se ha podido insertar debido ha que ya existe");
+			}
 
 			/*
 			 * } else { JSFUtil.crearMensajeError("Debe ingresar todos los campos"); }
@@ -179,16 +253,37 @@ public class BeanUsuarioRol implements Serializable {
 	public void actionListenerInsertarUsuarioADM() {
 		try {
 			// if ( uRol.ge) {
-
+			boolean validar = false;
+			int cont = 0;
+			int cont1 = 0;
 			UsuarioRol ur = new UsuarioRol();
 
 			ur.setRol(managerRol.findByIdRol(idRol));
 			ur.setUsuario(managerUser.findByIdUsuario(idUser));
-			managerUsuarioRol.insertarUsuarioRol(ur);
 
-			listaUsuarioRolADM = managerUsuarioRol.findAllUsuarioRolADM();
-			limpiarUsuarioRol();
-			JSFUtil.crearMensajeInfo("Insertado con éxito");
+			for (UsuarioRol u : listaUsuarioRolADM) {
+				if (u.getRol().getIdRol().equals(ur.getRol().getIdRol())
+						&& u.getUsuario().getIdUsuario().equals(ur.getUsuario().getIdUsuario())) {
+					validar = false;
+					cont++;
+				} else {
+					validar = true;
+					cont1++;
+				}
+
+			}
+			System.out.println("cont " + cont);
+			System.out.println("cont2 " + cont1);
+			
+			if (validar && cont == 0) {
+				managerUsuarioRol.insertarUsuarioRol(ur);
+
+				listaUsuarioRolADM = managerUsuarioRol.findAllUsuarioRolADM();
+				limpiarUsuarioRol();
+				JSFUtil.crearMensajeInfo("Insertado con éxito");
+			} else {
+				JSFUtil.crearMensajeError("No se ha podido insertar debido ha que ya existe");
+			}
 
 			/*
 			 * } else { JSFUtil.crearMensajeError("Debe ingresar todos los campos"); }
