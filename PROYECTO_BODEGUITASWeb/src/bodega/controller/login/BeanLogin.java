@@ -10,6 +10,7 @@ import javax.inject.Named;
 import bodega.model.entities.Usuario;
 import bodega.model.entities.UsuarioRol;
 import bodega.controller.admin.JSFUtil;
+import bodega.model.admin.ManagerUsuario;
 import bodega.model.dto.LoginDTO;
 import bodega.model.dto.ManagerLogin;
 import bodega.model.dto.ManagerSeguridad;
@@ -44,6 +45,9 @@ public class BeanLogin implements Serializable {
 	private ManagerSeguridad managerSeguridad;
 	@EJB
 	private ManagerLogin managerAuditoria;
+	@EJB
+	private ManagerUsuario managerUsuario;
+	
 	@EJB
 	private ManagerLogin managerLogin;
 	
@@ -226,8 +230,9 @@ public class BeanLogin implements Serializable {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(String password) throws Exception {
 		this.password = password;
+		
 	}
 
 	public List<UsuarioRol> getTipoUsuario() {

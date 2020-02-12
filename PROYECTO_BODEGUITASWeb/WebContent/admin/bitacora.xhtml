@@ -11,7 +11,7 @@
 </f:metadata>
 
 <h:head></h:head>
-<body onload="#{beanUsuario.inicializar()}">
+<body onload="#{beanBitacora.inicializar()}">
 	<p:growl>
 		<p:autoUpdate></p:autoUpdate>
 	</p:growl>
@@ -75,7 +75,7 @@
 						<p:separator />
 						<p:submenu label="Opciones" icon="fa fa-cog">
 							<p:menuitem value="Cambiar contraseña"
-								action="#{beanUsuario.irBitacora()}" update="@form"
+								action="#{beanUsuario.irCambiarContrasenia()}" update="@form"
 								icon="fa fa-key" />
 
 							<p:menuitem value="Cerrar sesión"

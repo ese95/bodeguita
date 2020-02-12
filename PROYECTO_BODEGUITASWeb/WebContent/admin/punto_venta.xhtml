@@ -37,7 +37,7 @@
 					<p:panelMenu>
 						<p:submenu label="Usuario">
 							<p:menuitem value="Usuario" action="#{beanUsuario.irUsuario()}"
-								update="@form" icon="fa fa-user" />			
+								update="@form" icon="fa fa-user" />
 							<p:menuitem value="Usuario - Rol"
 								action="#{beanUsuario.irUsuarioRol()}" update="@form"
 								icon="fa fa-book" />
@@ -61,19 +61,17 @@
 							<p:menuitem value="Categoría"
 								action="#{beanUsuario.irCategoria()}" update="@form"
 								icon="fa fa-clipboard" />
-
+							<p:menuitem value="Movimientos"
+								action="#{beanUsuario.irMovimientos()}" update="@form"
+								icon="fa fa-compress" />
 						</p:submenu>
 						<p:separator />
-						<p:submenu label="Bitácora" icon="fa fa-table">
-							<p:menuitem value="Bitácora" action="#{beanUsuario.irBitacora()}"
-								update="@form" icon="fa fa-table" />
 
-						</p:submenu>
 
 						<p:separator />
 						<p:submenu label="Opciones" icon="fa fa-cog">
 							<p:menuitem value="Cambiar contraseña"
-								action="#{beanUsuario.irBitacora()}" update="@form"
+								action="#{beanUsuario.irCambiarContrasenia()}" update="@form"
 								icon="fa fa-key" />
 
 							<p:menuitem value="Cerrar sesión"
@@ -95,11 +93,13 @@
 					</p:commandButton>
 					<br />
 					<br />
-					<p:dataTable value="#{beanPuntoVenta.listapv}" var="pv">
-						<p:column headerText="Nombre Punto de Venta" sortBy="#{pv.nombrePtoVenta}" filterBy="#{pv.nombrePtoVenta}">
-							<h:outputText value="#{pv.nombrePtoVenta}"  />
+					<p:dataTable value="#{beanPuntoVenta.listapvAdmin}" var="pv">
+						<p:column headerText="Nombre Punto de Venta"
+							sortBy="#{pv.nombrePtoVenta}" filterBy="#{pv.nombrePtoVenta}">
+							<h:outputText value="#{pv.nombrePtoVenta}" />
 						</p:column>
-						<p:column headerText="Correo " sortBy="#{pv.correoPtoVenta}" filterBy="#{pv.correoPtoVenta}">
+						<p:column headerText="Correo " sortBy="#{pv.correoPtoVenta}"
+							filterBy="#{pv.correoPtoVenta}">
 							<h:outputText value="#{pv.correoPtoVenta}" />
 						</p:column>
 						<p:column headerText="Dirección" sortBy="#{pv.direccionPtoVenta}">
@@ -118,9 +118,16 @@
 
 							<p:commandButton update="form" icon="fa fa-trash"
 								title="Eliminar"
-								actionListener="#{beanPuntoVenta.actionListenerEliminarPuntoVenta(pv.idPtoVenta)}">
+								actionListener="#{beanPuntoVenta.actionListenerEliminarPuntoVenta(pv.idPtoVenta)}"
+								style="background-color:red;">
 								<p:confirm header="Confirmación" message="¿Desea eliminar?"
 									icon="fa fa-info"></p:confirm>
+							</p:commandButton>
+
+							<p:commandButton update="form" icon="fa fa-eye"
+								style="background-color:yellow;color:blue" title="Ver elementos"
+								action="#{beanPuntoVenta.ver_bodegas_ptoVenta()}"
+								actionListener="#{beanPuntoVenta.ver_bodegas_prVenta(pv.idPtoVenta)}">
 							</p:commandButton>
 						</p:column>
 					</p:dataTable>

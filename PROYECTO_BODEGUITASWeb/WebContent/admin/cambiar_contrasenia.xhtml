@@ -1,3 +1,4 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -9,13 +10,19 @@
 		type="preRenderView"></f:event>
 
 </f:metadata>
-<h:head></h:head>
-<body onload="#{beanUsuarioRol.inicializar()}">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+</h:head>
+<body onload="#{beanUsuario.inicializar()}">
 	<p:growl>
 		<p:autoUpdate></p:autoUpdate>
 	</p:growl>
 	<h:form>
 		<p:menubar>
+
+
 			<f:facet name="options">
 				<p:outputLabel value="| ADMINISTRADOR | "></p:outputLabel>
 				<p:outputLabel value="#{beanLogin.correo} | "></p:outputLabel>
@@ -26,8 +33,7 @@
 		</p:menubar>
 	</h:form>
 
-	<p:panel header="INICIO">
-
+	<p:panel header="MEDIDAS">
 		<div class="ui-g" style="margin-top: 20px;">
 
 			<div class="ui-g-12 ui-md-2 ui-lg-2">
@@ -36,9 +42,14 @@
 						<p:submenu label="Usuario">
 							<p:menuitem value="Usuario" action="#{beanUsuario.irUsuario()}"
 								update="@form" icon="fa fa-user" />
+							<p:menuitem value="Rol" action="#{beanUsuario.irRol()}"
+								update="@form" icon="fa fa-address-book" />
+							<p:menuitem value="Género" action="#{beanUsuario.irGenero()}"
+								update="@form" icon="fa fa-address-card" />
 							<p:menuitem value="Usuario - Rol"
 								action="#{beanUsuario.irUsuarioRol()}" update="@form"
 								icon="fa fa-book" />
+
 						</p:submenu>
 						<p:submenu label="Producto">
 							<p:menuitem value="Producto" action="#{beanUsuario.irProducto()}"
@@ -59,13 +70,12 @@
 							<p:menuitem value="Categoría"
 								action="#{beanUsuario.irCategoria()}" update="@form"
 								icon="fa fa-clipboard" />
-
 							<p:menuitem value="Movimientos"
 								action="#{beanUsuario.irMovimientos()}" update="@form"
 								icon="fa fa-compress" />
 						</p:submenu>
 						<p:separator />
-
+						
 						<p:separator />
 						<p:submenu label="Opciones" icon="fa fa-cog">
 							<p:menuitem value="Cambiar contraseña"
@@ -84,67 +94,86 @@
 
 			<div class="ui-g-12 ui-md-10 ui-lg-10">
 				<h:form id="form">
-					<p:commandButton icon="fa fa-plus-square"
-						style="margin-right: 90%;" value="  Nuevo" update="form"
-						action="#{beanUsuario.limpiarUsuario()}"
-						title="Nuevo Punto de venta" oncomplete="PF('dlgCrear').show();">
-					</p:commandButton>
-					<br />
-					<br />
-					<p:dataTable value="#{beanUsuario.listaUser}" var="u" reflow="true">
-						<p:column headerText="Foto">
-							<h:graphicImage value="data:image/jpg;base64,#{u.imagenUsuario}"
-								width="90" />
-						</p:column>
-						<p:column headerText="Nombre ">
-							<h:outputText value="#{u.nombreUsuario}" />
-						</p:column>
-						<p:column headerText="Apellido">
-							<h:outputText value="#{u.apellidoUsuario}" />
-						</p:column>
-						<p:column headerText="Cédula">
-							<h:outputText value="#{u.cedulaUsuario}" />
-						</p:column>
-						<p:column headerText="Correo">
-							<h:outputText value="#{u.correoUsuario}" />
-						</p:column>
+					<p:panel header="Cambio de contraseña">
+						<p:panelGrid columns="2">
+							<h:outputText value="Ingrese contraseña anterior" />
+							<p:inputText value="#{beanUsuario.claveAnterior}"
+								requiredMessage="Su clave anterior es requerida" required="true"
+								maxlength="50">
+							</p:inputText>
 
-						<p:column headerText="Género">
-							<h:outputText value="#{u.genero.tipoGenero}" />
-							<h:inputHidden value="#{u.genero.idGenero}" />
-						</p:column>
-						<p:column headerText="Dirección">
-							<h:outputText value="#{u.direccionUsuario}" />
-						</p:column>
-						<p:column headerText="Teléfono">
-							<h:outputText value="#{u.telefonoUsuario}" />
-						</p:column>
-						<p:column headerText="Fecha Nacimiento">
-							<h:outputText value="#{u.fechaNacUsuario}" />
-						</p:column>
-						<p:column headerText="Opciones">
-							<p:commandButton icon="fa fa-edit" update=":form" title="Editar"
-								actionListener="#{beanUsuario.actionListenerCargarUsuario(u)}"
-								oncomplete="PF('dlgEditar').show();">
-							</p:commandButton>
+							<h:outputText value="Ingrese contraseña nueva" />
+							<p:inputText value="#{beanUsuario.claveNueva}"
+								requiredMessage="Su clave nueva es requerida" required="true"
+								maxlength="50">
+							</p:inputText>
 
-							<p:commandButton update="form" icon="fa fa-trash"
-								title="Eliminar"
-								actionListener="#{beanUsuario.actionListenerEliminarUsuario(u.idUsuario)}">
-								<p:confirm header="Confirmación" message="¿Desea eliminar?"
-									icon="fa fa-info"></p:confirm>
-							</p:commandButton>
-						</p:column>
-					</p:dataTable>
+
+						</p:panelGrid>
+						<br />
+						<p:commandButton value="Cambiar contraseña" update="form"
+							actionListener="#{beanUsuario.actionListenerActualizarClave()}">
+
+						</p:commandButton>
+					</p:panel>
 				</h:form>
 			</div>
 
 		</div>
 
-
 	</p:panel>
 
+	<p:dialog header="Crear Medida" widgetVar="dlgCrear">
+		<h:form id="formCrear">
+			<p:growl>
+				<p:autoUpdate />
+			</p:growl>
 
+			<p:panelGrid columns="2">
+				<h:outputText value="Tipo de Medida" />
+				<p:inputText value="#{beanMedida.medida.tipoMedida}"
+					requiredMessage="El tipo de medida es requerida" required="true"
+					maxlength="50"
+					validatorMessage="Medida incorrecta, sólo se permite letras">
+					<f:validateRegex pattern="[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]+" />
+				</p:inputText>
+
+
+			</p:panelGrid>
+			<br />
+			<p:commandButton value="Crear" update="form"
+				actionListener="#{beanMedida.actionListenerInsertarMedida()}"
+				oncomplete="PF('dlgCrear').hide();">
+			</p:commandButton>
+		</h:form>
+
+	</p:dialog>
+
+	<p:dialog header="Editar Medida" widgetVar="dlgEditar">
+		<h:form id="formEditar">
+			<p:growl>
+				<p:autoUpdate />
+			</p:growl>
+
+			<p:panelGrid columns="2">
+				<h:outputText value="Tipo de medida" />
+				<p:inputText value="#{beanMedida.medida.tipoMedida}"
+					requiredMessage="El tipo de medida es requerida" required="true"
+					maxlength="50"
+					validatorMessage="Medida incorrecta, sólo se permite letras">
+					<f:validateRegex pattern="[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]+" />
+				</p:inputText>
+
+
+			</p:panelGrid>
+			<br />
+			<p:commandButton value="Actualizar" update="form"
+				actionListener="#{beanMedida.actionListenerActualizarMedida()}"
+				oncomplete="PF('dlgEditar').hide();">
+			</p:commandButton>
+		</h:form>
+
+	</p:dialog>
 
 	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
 		<p:commandButton value="Sí" type="button"

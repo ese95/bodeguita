@@ -1,12 +1,16 @@
 package bodega.model.admin;
 
+import java.net.InetAddress;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
 
 import bodega.model.entities.Bitacora;
 import bodega.model.manager.ManagerDAO;
@@ -44,6 +48,37 @@ private ManagerDAO managerDAO;
     	//managerDAO.insertar(cat);
     	em.merge(bit);
     }
+    
+    
+//    @SuppressWarnings("rawtypes")
+//  	private void generarLog(long idTipoEvento,Credencial credencial,Class clase,String metodo,String detalle){
+//      	Bitacora nuevoEvento;
+//      	nuevoEvento=new Bitacora();
+//      	LogTiposEvento tipoEvento=null;
+//      	Date fecha=new Date();
+//      	
+//      	//buscamos el tipo de evento correspondiente:
+//      	try {
+//  			tipoEvento=findByIdLogTiposEvento(idTipoEvento);
+//  			if(tipoEvento==null)
+//  				System.out.println("ERROR LOG NO EXISTE TIPO EVENTO: "+idTipoEvento);
+//  		} catch (Exception e1) {
+//  			System.out.println("ERROR BUSCANDO LOG TIPO EVENTO: "+e1.getMessage());
+//  		}
+//      	
+//      	nuevoEvento.setDireccionIp(credencial.getDireccionIP());
+//      	nuevoEvento.setFechaEvento(fecha);
+//      	nuevoEvento.setIdUsuario(new BigDecimal(credencial.getIdUsuario()));
+//      	nuevoEvento.setMensaje(detalle);
+//      	nuevoEvento.setMetodo(clase.getCanonicalName()+"["+ metodo +"]");
+//      	nuevoEvento.setLogTiposEvento(tipoEvento);
+//      	
+//      	try {
+//  			managerDAO.insertar(nuevoEvento);
+//  		} catch (Exception e) {
+//  			System.out.println("ERROR LOG: "+e.getMessage());
+//  		}
+//      }
     /*
     public Medida findByIdMedida(Integer id) {
     	
@@ -79,26 +114,26 @@ private ManagerDAO managerDAO;
     ///////////////////////////////////////////
     
 
-	/*public List<Bitacora> findAllBitacoras() {
-		String consulta = "SELECT o FROM Bitacora o";
-		Query q = em.createQuery(consulta, Bitacora.class);
-		return q.getResultList();
-	}
+//	public List<Bitacora> findAllBitacoras() {
+//		String consulta = "SELECT o FROM Bitacora o";
+//		Query q = em.createQuery(consulta, Bitacora.class);
+//		return q.getResultList();
+//	}
 	
-	public void crearEvento(String correo,Class clase,String metodo,String descripcion) throws Exception{
+	public void crearEvento(String metodo,String descripcion) throws Exception{
 		Bitacora evento=new Bitacora();
 		//cambio para probar git
 		
 	//	if(codigoUsuario==null||codigoUsuario==0)
-		if(correo.length()==0)
-			throw new Exception("Error auditoria: debe indicar el correo del usuario.");
-		if(metodo==null||metodo.length()==0)
-			throw new Exception("Error auditoria: debe indicar el metodo que genera el evento.");
+//		if(correo.length()==0)
+//			throw new Exception("Error auditoria: debe indicar el correo del usuario.");
+//		if(metodo==null||metodo.length()==0)
+//			throw new Exception("Error auditoria: debe indicar el metodo que genera el evento.");
 
 		//Usuario usuario=(Usuario)managerDAO.findById(Usuario.class, correo);
-		List <Usuario>usuario=managerDAO.findUsuarioByCedula(correo);
-		if(usuario==null)
-			throw new Exception("Error auditoria: no existe el usuario indicado.");
+//		List <Usuario>usuario=managerDAO.findUsuarioByCedula(correo);
+//		if(usuario==null)
+//			throw new Exception("Error auditoria: no existe el usuario indicado.");
 
 		/////obtener la ip 3 formas/////////////////
         InetAddress address = InetAddress.getLocalHost();
@@ -114,16 +149,15 @@ private ManagerDAO managerDAO;
       //  System.out.println("ipAddress:" + ipAddress);
         
         
-		evento.setUsuario(usuario.get(0));
-		evento.setAccion(clase.getSimpleName()+"/"+metodo);
+		evento.setAccion(metodo);
+		//evento.setAccion(clase.getSimpleName()+"/"+metodo);
 		evento.setDescripcion(descripcion);
-		evento.setFecha(new Timestamp(new Date().getTime()));
+		evento.setFecha(new Date());
 		evento.setIp(remoteAddr);
-
 		
 		managerDAO.insertar(evento);
 	}
-    */
+    
     
     
     

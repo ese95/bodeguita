@@ -37,6 +37,11 @@ public class PuntoVenta implements Serializable {
 	@OneToMany(mappedBy="puntoVenta")
 	private List<Bodega> bodegas;
 
+	//bi-directional many-to-one association to UsuarioRol
+	@ManyToOne
+	@JoinColumn(name="id_usuario_rol")
+	private UsuarioRol usuarioRol;
+
 	public PuntoVenta() {
 	}
 
@@ -100,6 +105,14 @@ public class PuntoVenta implements Serializable {
 		bodega.setPuntoVenta(null);
 
 		return bodega;
+	}
+
+	public UsuarioRol getUsuarioRol() {
+		return this.usuarioRol;
+	}
+
+	public void setUsuarioRol(UsuarioRol usuarioRol) {
+		this.usuarioRol = usuarioRol;
 	}
 
 }

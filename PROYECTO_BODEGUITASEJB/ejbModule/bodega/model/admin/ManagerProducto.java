@@ -8,7 +8,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-
+import bodega.model.entities.Movimiento;
 import bodega.model.entities.Producto;
 import bodega.model.manager.ManagerDAO;
 
@@ -41,6 +41,16 @@ private ManagerDAO managerDAO;
     	
     }
  
+    @SuppressWarnings("unchecked")
+   	public List<Producto> findWhereID_Bodega(Integer id) {
+       	try {
+       		return managerDAO.findWhere(Producto.class, "o.bodega.idBodega="+id, null);	
+   		} catch (Exception e) {
+   			e.printStackTrace();
+   		}
+       	return null;	
+       }
+    
     public Producto findByIdProducto(Integer id) {
     	
     	try {
@@ -50,7 +60,10 @@ private ManagerDAO managerDAO;
 		}
 		return null;	
     }
-    
+    @SuppressWarnings("unchecked")
+	public List<Producto>findByIdListaProd(Integer id) throws Exception{
+    return	managerDAO.findWhere(Producto.class, "o.bodega.idBodega="+id,null);
+    }
     public void insertarUsuario(Producto p) throws Exception {
     	//managerDAO.insertar(cat);
     	em.merge(p);
@@ -69,6 +82,7 @@ private ManagerDAO managerDAO;
 			p.setDescripcionProducto(prod.getDescripcionProducto());
 			p.setEstadoProducto(prod.getEstadoProducto());
 			p.setImagenProducto(prod.getImagenProducto());
+			p.setBodega(prod.getBodega());
 			p.setMedida(prod.getMedida());
 			p.setNombreProducto(prod.getNombreProducto());
 			p.setPrecioBaseProducto(prod.getPrecioBaseProducto());

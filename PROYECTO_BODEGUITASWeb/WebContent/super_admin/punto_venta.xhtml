@@ -70,7 +70,9 @@
 							<p:menuitem value="Categoría"
 								action="#{beanUsuario.irCategoria()}" update="@form"
 								icon="fa fa-clipboard" />
-
+							<p:menuitem value="Movimientos"
+								action="#{beanUsuario.irMovimientos()}" update="@form"
+								icon="fa fa-compress" />
 						</p:submenu>
 						<p:separator />
 						<p:submenu label="Bitácora" icon="fa fa-table">
@@ -82,7 +84,7 @@
 						<p:separator />
 						<p:submenu label="Opciones" icon="fa fa-cog">
 							<p:menuitem value="Cambiar contraseña"
-								action="#{beanUsuario.irBitacora()}" update="@form"
+								action="#{beanUsuario.irCambiarContrasenia()}" update="@form"
 								icon="fa fa-key" />
 
 							<p:menuitem value="Cerrar sesión"
@@ -130,9 +132,14 @@
 
 							<p:commandButton update="form" icon="fa fa-trash"
 								title="Eliminar"
-								actionListener="#{beanPuntoVenta.actionListenerEliminarPuntoVenta(pv.idPtoVenta)}">
+								actionListener="#{beanPuntoVenta.actionListenerEliminarPuntoVenta(pv.idPtoVenta)}" style="background-color:red;">
 								<p:confirm header="Confirmación" message="¿Desea eliminar?"
 									icon="fa fa-info"></p:confirm>
+							</p:commandButton>
+								<p:commandButton update="form" icon="fa fa-eye" style="background-color:yellow;color:blue"
+								title="Ver elementos"
+								action="#{beanPuntoVenta.ver_bodegas_ptoVenta()}"
+							    actionListener="#{beanPuntoVenta.ver_bodegas_prVenta(pv.idPtoVenta)}">
 							</p:commandButton>
 						</p:column>
 					</p:dataTable>

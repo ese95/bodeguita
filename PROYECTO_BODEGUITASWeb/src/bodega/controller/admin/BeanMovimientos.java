@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -20,6 +21,7 @@ import javax.inject.Named;
 
 import org.primefaces.model.UploadedFile;
 
+import bodega.model.admin.ManagerBitacora;
 import bodega.model.admin.ManagerBodega;
 import bodega.model.admin.ManagerMovimiento;
 import bodega.model.admin.ManagerProducto;
@@ -49,6 +51,10 @@ public class BeanMovimientos implements Serializable {
 
 	@EJB
 	private ManagerMovimiento managerMovimiento;
+
+	@EJB
+	private ManagerBitacora managerbit;
+
 	@EJB
 	private ManagerProducto managerProducto;
 	@EJB
@@ -113,6 +119,7 @@ public class BeanMovimientos implements Serializable {
 
 				managerMovimiento.actualizarMovimiento(m);
 				listaMovimientos = managerMovimiento.findAllMovimientos();
+				managerbit.crearEvento("actionListenerActualizarMovimiento()", "actualiza un movimineto ");
 
 				JSFUtil.crearMensajeInfo("Actualizado con éxito");
 
@@ -122,6 +129,25 @@ public class BeanMovimientos implements Serializable {
 
 		} catch (Exception e) {
 			JSFUtil.crearMensajeError("Error al actualizar");
+		}
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public void ObtenerProductos(Integer id) {
+		listaProducto = new ArrayList<Producto>();
+		try {
+			System.out.println("El id " + id);
+			if (id.intValue()!=0) {
+				listaProducto = managerProducto.findByIdListaProd(id);
+				for (Producto bodega : listaProducto) {
+					System.out.println("prod -. " + bodega.getNombreProducto());
+				}
+			}
+			
+		} catch (Exception e) {
+			System.out.println("ERRORRRRRRR : " + e.getMessage());
+			e.printStackTrace();
 		}
 
 	}
@@ -141,21 +167,79 @@ public class BeanMovimientos implements Serializable {
 
 			if (mov.getCantidadMovim().toString().length() > 0) {
 				Movimiento m = new Movimiento();
+				int cantidad = 0;
+				// m.setFechaMovim(mov.getFechaMovim());
+				Producto pro = managerProducto.findByIdProducto(idProducto);
 
-				m.setFechaMovim(mov.getFechaMovim());
-				m.setCantidadMovim(mov.getCantidadMovim());
 				m.setComentario(mov.getComentario());
 				m.setPrecioBaseMovim(mov.getPrecioBaseMovim());
 				m.setCostoMovim(mov.getCostoMovim());
+				m.setFechaMovim(new Date());
 				m.setBodega(managerBodega.findByIdBodega(idBodega));
-				m.setProducto(managerProducto.findByIdProducto(idProducto));
+
 				m.setTipoDocumento(managerMovimiento.findByIdTipoDocumento(idDocumento));
+				if (idDocumento == 1) {
+					// factura -10
+					m.setCantidadMovim(mov.getCantidadMovim());
+					cantidad = pro.getCantidadStockProducto() - mov.getCantidadMovim();
+					System.out.println("cantidad " + cantidad);
+					if (cantidad >= 10) {
+						pro.setCantidadStockProducto(cantidad);
+						managerProducto.actualizarProducto(pro);
+						m.setProducto(pro);
 
-				managerMovimiento.insertarMovimiento(m);
-				listaMovimientos = managerMovimiento.findAllMovimientos();
-				limpiarMovimiento();
+						managerMovimiento.insertarMovimiento(m);
+						listaMovimientos = managerMovimiento.findAllMovimientos();
+						limpiarMovimiento();
+						managerbit.crearEvento("actionListenerInsertarMovimiento()",
+								"actualiza un movimiento con documento ´factura´ ");
+						JSFUtil.crearMensajeInfo("Insertado con éxito");
 
-				JSFUtil.crearMensajeInfo("Insertado con éxito");
+					} else {
+						JSFUtil.crearMensajeError(
+								"no se puede realizar la transacción: Debido a que la cantidad excede al STOCK minímo");
+					}
+
+				} else if (idDocumento == 2) {
+					// orden compra +10
+					m.setCantidadMovim(mov.getCantidadMovim());
+					cantidad = pro.getCantidadStockProducto() + mov.getCantidadMovim();
+					System.out.println("cantidad " + cantidad);
+					pro.setCantidadStockProducto(cantidad);
+					managerProducto.actualizarProducto(pro);
+					m.setProducto(pro);
+
+					managerMovimiento.insertarMovimiento(m);
+					listaMovimientos = managerMovimiento.findAllMovimientos();
+					limpiarMovimiento();
+
+					JSFUtil.crearMensajeInfo("Insertado con éxito");
+					managerbit.crearEvento("actionListenerInsertarMovimiento()",
+							"actualiza un movimiento con documento ´orden de compra´ ");
+
+				} else {
+					// nota de venta -10
+					m.setCantidadMovim(mov.getCantidadMovim());
+					cantidad = pro.getCantidadStockProducto() - mov.getCantidadMovim();
+					System.out.println("cantidad " + cantidad);
+					if (cantidad >= 10) {
+						pro.setCantidadStockProducto(cantidad);
+						managerProducto.actualizarProducto(pro);
+						m.setProducto(pro);
+
+						managerMovimiento.insertarMovimiento(m);
+						listaMovimientos = managerMovimiento.findAllMovimientos();
+						limpiarMovimiento();
+
+						JSFUtil.crearMensajeInfo("Insertado con éxito");
+						managerbit.crearEvento("actionListenerInsertarMovimiento()",
+								"actualiza un movimiento con documento 'Nota de venta´ ");
+
+					} else {
+						JSFUtil.crearMensajeError(
+								"no se puede realizar la transacción: Debido a que la cantidad excede al STOCK minímo");
+					}
+				}
 
 			} else {
 				JSFUtil.crearMensajeError("Debe ingresar todos los campos");
@@ -168,11 +252,12 @@ public class BeanMovimientos implements Serializable {
 
 	}
 
-	
 	public void actionListenerEliminarMovimineto(Integer id) {
 		try {
 			managerMovimiento.eliminarMovimiento(id);
-			listaMovimientos=managerMovimiento.findAllMovimientos();
+			listaMovimientos = managerMovimiento.findAllMovimientos();
+			managerbit.crearEvento("actionListenerEliminarMovimineto()", "elimina un movimiento  ");
+
 			JSFUtil.crearMensajeInfo("Su movimiento ha sido eliminado");
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -237,7 +322,5 @@ public class BeanMovimientos implements Serializable {
 	public void setMov(Movimiento mov) {
 		this.mov = mov;
 	}
-
-	
 
 }

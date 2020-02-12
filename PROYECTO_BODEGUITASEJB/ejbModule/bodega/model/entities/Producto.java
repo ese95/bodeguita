@@ -50,6 +50,11 @@ public class Producto implements Serializable {
 	@OneToMany(mappedBy="producto")
 	private List<Movimiento> movimientos;
 
+	//bi-directional many-to-one association to Bodega
+	@ManyToOne
+	@JoinColumn(name="id_bodega")
+	private Bodega bodega;
+
 	//bi-directional many-to-one association to Categoria
 	@ManyToOne
 	@JoinColumn(name="id_categoria")
@@ -155,6 +160,14 @@ public class Producto implements Serializable {
 		movimiento.setProducto(null);
 
 		return movimiento;
+	}
+
+	public Bodega getBodega() {
+		return this.bodega;
+	}
+
+	public void setBodega(Bodega bodega) {
+		this.bodega = bodega;
 	}
 
 	public Categoria getCategoria() {

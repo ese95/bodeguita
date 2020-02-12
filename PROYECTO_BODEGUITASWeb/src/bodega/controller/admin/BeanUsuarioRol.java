@@ -12,6 +12,7 @@ import javax.inject.Named;
 import bodega.model.admin.ManagerUsuario;
 import bodega.model.admin.ManagerUsuarioRol;
 import bodega.controller.login.BeanLogin;
+import bodega.model.admin.ManagerBitacora;
 import bodega.model.admin.ManagerRol;
 
 import bodega.model.entities.UsuarioRol;
@@ -33,6 +34,9 @@ public class BeanUsuarioRol implements Serializable {
 	private List<Usuario> listaUsuario;
 	@EJB
 	private ManagerUsuarioRol managerUsuarioRol;
+	
+	@EJB
+	private ManagerBitacora managerbit;
 
 	@EJB
 	private ManagerRol managerRol;
@@ -136,6 +140,7 @@ public class BeanUsuarioRol implements Serializable {
 				managerUsuarioRol.actualizarUsuarioRol(ur);
 				listaUsuarioRol = managerUsuarioRol.findAllUsuarioRol();
 				JSFUtil.crearMensajeInfo("Actualizado con éxito");
+				managerbit.crearEvento("actionListenerActualizarUsuarioRol()", "Actualiza un rol de usuario ");
 				} else {
 					JSFUtil.crearMensajeError("No se ha podido actualizar debido ha que ya existe");
 				}
@@ -186,11 +191,12 @@ public class BeanUsuarioRol implements Serializable {
 					managerUsuarioRol.actualizarUsuarioRol(ur);
 					listaUsuarioRolADM = managerUsuarioRol.findAllUsuarioRolADM();
 					JSFUtil.crearMensajeInfo("Actualizado con éxito");
+					managerbit.crearEvento("actionListenerActualizarUsuarioRolADM()", "Actualiza un rol de usuario del admin");
+					
 					} else {
 						JSFUtil.crearMensajeError("No se ha podido actualizar debido ha que ya existe");
 					}
-				
-				
+	
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -236,6 +242,8 @@ public class BeanUsuarioRol implements Serializable {
 				listaUsuarioRol = managerUsuarioRol.findAllUsuarioRol();
 				limpiarUsuarioRol();
 				JSFUtil.crearMensajeInfo("Insertado con éxito");
+				managerbit.crearEvento("actionListenerInsertarUsuario()", "Inserta un rol de usuario ");
+				
 			} else {
 				JSFUtil.crearMensajeError("No se ha podido insertar debido ha que ya existe");
 			}
@@ -303,6 +311,9 @@ public class BeanUsuarioRol implements Serializable {
 				managerUsuarioRol.eliminarUsuarioRol(id);
 				listaUsuarioRol = managerUsuarioRol.findAllUsuarioRol();
 				JSFUtil.crearMensajeInfo("Su 'USUARIO - ROL' ha sido eliminado");
+				managerbit.crearEvento("actionListenerEliminarUsuarioRol()", "Elimina un rol de usuario ");
+				
+				
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -320,6 +331,8 @@ public class BeanUsuarioRol implements Serializable {
 				managerUsuarioRol.eliminarUsuarioRol(id);
 				listaUsuarioRolADM = managerUsuarioRol.findAllUsuarioRolADM();
 				JSFUtil.crearMensajeInfo("Su 'USUARIO - ROL' ha sido eliminado");
+				managerbit.crearEvento("actionListenerEliminarUsuarioRolADM()", "Elimina un rol de usuario DEL admin ");
+				
 			}
 
 		} catch (Exception e) {

@@ -8,6 +8,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import bodega.model.admin.ManagerBitacora;
 import bodega.model.admin.ManagerGenero;
 import bodega.model.entities.Genero;
 
@@ -22,6 +23,9 @@ public class BeanGenero implements Serializable {
 	private List<Genero> listaGenero;
 	@EJB
 	private ManagerGenero managerGenero;
+	
+	@EJB
+	private ManagerBitacora managerBitacora;
 	private Genero genero;
 
 	@PostConstruct
@@ -53,6 +57,8 @@ public class BeanGenero implements Serializable {
 				
 				managerGenero.actualizarGenero(g);
 				listaGenero = managerGenero.findAllGeneros();
+				managerBitacora.crearEvento("actionListenerActualizarGenero", "actualiza el género");
+				
 				JSFUtil.crearMensajeInfo("Actualizado con éxito");
 			} else {
 				JSFUtil.crearMensajeError("Debe ingresar el tipo de género");
@@ -76,6 +82,8 @@ public class BeanGenero implements Serializable {
 				managerGenero.insertarGenero(g);
 				listaGenero = managerGenero.findAllGeneros();
 				limpiarGenero();
+				managerBitacora.crearEvento("actionListenerInsertarGenero", "ingresa un género");
+				
 				JSFUtil.crearMensajeInfo("Insertado con éxito");
 			} else {
 				JSFUtil.crearMensajeError("Debe ingresar todos los campos");
@@ -92,6 +100,7 @@ public class BeanGenero implements Serializable {
 		try {
 			managerGenero.eliminarGenero(id);
 			listaGenero = managerGenero.findAllGeneros();
+			managerBitacora.crearEvento("actionListenerEliminarGenero", "Elimina un genero");
 			JSFUtil.crearMensajeInfo("Su género ha sido eliminado");
 		} catch (Exception e) {
 			// TODO: handle exception

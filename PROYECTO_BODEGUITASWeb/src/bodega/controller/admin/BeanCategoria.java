@@ -9,6 +9,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import bodega.model.admin.ManagerBitacora;
 import bodega.model.admin.ManagerCategoria;
 import bodega.model.entities.Categoria;
 
@@ -23,6 +24,9 @@ public class BeanCategoria implements Serializable {
     private List<Categoria>listaCategoria;
 	@EJB
 	private ManagerCategoria managerCategoria;
+	
+	@EJB
+	private ManagerBitacora managerbit;
 	private Categoria categoria;
 	
 	@PostConstruct
@@ -56,6 +60,7 @@ public class BeanCategoria implements Serializable {
 				c.setEstadoCategoria(categoria.getEstadoCategoria());
 				managerCategoria.actualizarCategoria(c);
 				listaCategoria=managerCategoria.findAllCategorias();
+				managerbit.crearEvento("actionListenerActualizarCategoria()", "Actualiza una categoria ");
 				JSFUtil.crearMensajeInfo("Actualizado con éxito");
 			} else {
 				JSFUtil.crearMensajeError("Debe ingresar el nombre de la categoría");
@@ -81,6 +86,7 @@ public class BeanCategoria implements Serializable {
 				managerCategoria.insertarCategoria(c);
 				listaCategoria=managerCategoria.findAllCategorias();
 				limpiarCategoria();
+				managerbit.crearEvento("actionListenerInsertarCategoria()", "Inserta una categoria ");
 				JSFUtil.crearMensajeInfo("Insertado con éxito");
 			} else {
 				JSFUtil.crearMensajeError("Debe ingresar todos los campos");
@@ -96,6 +102,7 @@ public class BeanCategoria implements Serializable {
 		try {
 			managerCategoria.eliminarCategoria(id);
 			listaCategoria=managerCategoria.findAllCategorias();
+			managerbit.crearEvento("actionListenerEliminarCategoria()", "Elimina una categoria ");
 			JSFUtil.crearMensajeInfo("Su categoría ha sido eliminada");
 		} catch (Exception e) {
 			// TODO: handle exception

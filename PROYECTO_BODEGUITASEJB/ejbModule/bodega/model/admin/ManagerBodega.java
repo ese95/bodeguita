@@ -73,7 +73,7 @@ private ManagerDAO managerDAO;
 			
 		} else {
 			bod.setDireccionBodega(bodega.getDireccionBodega());
-			bod.setMovimientos(bodega.getMovimientos());
+			//bod.setMovimientos(bodega.);
 			bod.setNombreBodega(bodega.getNombreBodega());
 			bod.setPuntoVenta(bodega.getPuntoVenta());
 			

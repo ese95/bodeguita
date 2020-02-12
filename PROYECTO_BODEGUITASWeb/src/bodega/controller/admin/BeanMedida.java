@@ -8,6 +8,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import bodega.model.admin.ManagerBitacora;
 import bodega.model.admin.ManagerMedida;
 import bodega.model.entities.Medida;
 
@@ -22,6 +23,10 @@ public class BeanMedida implements Serializable {
 	private List<Medida> listaMedida;
 	@EJB
 	private ManagerMedida managerMedida;
+	
+	@EJB
+	private ManagerBitacora managerbit;
+	
 	private Medida medida;
 
 	@PostConstruct
@@ -53,6 +58,7 @@ public class BeanMedida implements Serializable {
 				m.setTipoMedida(medida.getTipoMedida());
 				managerMedida.actualizarMedida(m);
 				listaMedida=managerMedida.findAllMedidas();
+				managerbit.crearEvento("actionListenerActualizarMedida()", "actualiza una medida ");
 				JSFUtil.crearMensajeInfo("Actualizado con �xito");
 			} else {
 				JSFUtil.crearMensajeError("Debe ingresar el tipo de medida"); 
@@ -76,6 +82,7 @@ public class BeanMedida implements Serializable {
 				managerMedida.insertarMedida(m);
 				listaMedida=managerMedida.findAllMedidas();
 				limpiarMedida();
+				managerbit.crearEvento("actionListenerInsertarMedida()", "inserta una medida ");
 				JSFUtil.crearMensajeInfo("Insertado con �xito");
 			} else {
 				JSFUtil.crearMensajeError("Debe ingresar todos los campos");
@@ -92,6 +99,7 @@ public class BeanMedida implements Serializable {
 		try {
 			managerMedida.eliminarMedida(id);
 			listaMedida=managerMedida.findAllMedidas();
+			managerbit.crearEvento("actionListenerEliminarMedida(Integer id)", "Elimina una medida ");
 			JSFUtil.crearMensajeInfo("Su medida ha sido eliminada");
 		} catch (Exception e) {
 			// TODO: handle exception

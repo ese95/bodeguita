@@ -27,19 +27,18 @@ public class Bodega implements Serializable {
 	@Column(name="nombre_bodega", nullable=false, length=50)
 	private String nombreBodega;
 
+	//bi-directional many-to-one association to Movimiento
+	@OneToMany(mappedBy="bodega")
+	private List<Movimiento> movimientos;
+
+	//bi-directional many-to-one association to Producto
+	@OneToMany(mappedBy="bodega")
+	private List<Producto> productos;
+
 	//bi-directional many-to-one association to PuntoVenta
 	@ManyToOne
 	@JoinColumn(name="id_pto_venta")
 	private PuntoVenta puntoVenta;
-
-	//bi-directional many-to-one association to Usuario
-	@ManyToOne
-	@JoinColumn(name="id_usuario_usuario")
-	private Usuario usuario;
-
-	//bi-directional many-to-one association to Movimiento
-	@OneToMany(mappedBy="bodega")
-	private List<Movimiento> movimientos;
 
 	public Bodega() {
 	}
@@ -68,22 +67,6 @@ public class Bodega implements Serializable {
 		this.nombreBodega = nombreBodega;
 	}
 
-	public PuntoVenta getPuntoVenta() {
-		return this.puntoVenta;
-	}
-
-	public void setPuntoVenta(PuntoVenta puntoVenta) {
-		this.puntoVenta = puntoVenta;
-	}
-
-	public Usuario getUsuario() {
-		return this.usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
 	public List<Movimiento> getMovimientos() {
 		return this.movimientos;
 	}
@@ -104,6 +87,36 @@ public class Bodega implements Serializable {
 		movimiento.setBodega(null);
 
 		return movimiento;
+	}
+
+	public List<Producto> getProductos() {
+		return this.productos;
+	}
+
+	public void setProductos(List<Producto> productos) {
+		this.productos = productos;
+	}
+
+	public Producto addProducto(Producto producto) {
+		getProductos().add(producto);
+		producto.setBodega(this);
+
+		return producto;
+	}
+
+	public Producto removeProducto(Producto producto) {
+		getProductos().remove(producto);
+		producto.setBodega(null);
+
+		return producto;
+	}
+
+	public PuntoVenta getPuntoVenta() {
+		return this.puntoVenta;
+	}
+
+	public void setPuntoVenta(PuntoVenta puntoVenta) {
+		this.puntoVenta = puntoVenta;
 	}
 
 }

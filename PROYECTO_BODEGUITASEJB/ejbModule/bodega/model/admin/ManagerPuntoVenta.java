@@ -8,7 +8,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-
+import bodega.model.entities.Bodega;
+import bodega.model.entities.Producto;
 import bodega.model.entities.PuntoVenta;
 import bodega.model.manager.ManagerDAO;
 
@@ -41,6 +42,26 @@ private ManagerDAO managerDAO;
     	
     }
  
+    @SuppressWarnings("unchecked")
+   	public List<Bodega> findWhereID_PuntoVenta(Integer id) {
+       	try {
+       		return managerDAO.findWhere(Bodega.class, "o.puntoVenta.idPtoVenta="+id, null);	
+   		} catch (Exception e) {
+   			e.printStackTrace();
+   		}
+       	return null;	
+       }
+    
+    @SuppressWarnings("unchecked")
+	public List<PuntoVenta>findAllPuntoVentaUsuarioRol_Admin(Integer id){
+    	try {
+			return managerDAO.findWhere(PuntoVenta.class, "o.usuarioRol.idUsuarioRol="+id, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return null;
+    }
+    
     public PuntoVenta findByIdPuntoVenta(Integer id) {
     	
     	try {

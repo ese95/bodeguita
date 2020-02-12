@@ -35,7 +35,7 @@
 					<p:panelMenu>
 						<p:submenu label="Usuario">
 							<p:menuitem value="Usuario" action="#{beanUsuario.irUsuario()}"
-								update="@form" icon="fa fa-user" />			
+								update="@form" icon="fa fa-user" />
 							<p:menuitem value="Usuario - Rol"
 								action="#{beanUsuario.irUsuarioRol()}" update="@form"
 								icon="fa fa-book" />
@@ -59,19 +59,17 @@
 							<p:menuitem value="Categoría"
 								action="#{beanUsuario.irCategoria()}" update="@form"
 								icon="fa fa-clipboard" />
-
+							<p:menuitem value="Movimientos"
+								action="#{beanUsuario.irMovimientos()}" update="@form"
+								icon="fa fa-compress" />
 						</p:submenu>
 						<p:separator />
-						<p:submenu label="Bitácora" icon="fa fa-table">
-							<p:menuitem value="Bitácora" action="#{beanUsuario.irBitacora()}"
-								update="@form" icon="fa fa-table" />
 
-						</p:submenu>
 
 						<p:separator />
 						<p:submenu label="Opciones" icon="fa fa-cog">
 							<p:menuitem value="Cambiar contraseña"
-								action="#{beanUsuario.irBitacora()}" update="@form"
+								action="#{beanUsuario.irCambiarContrasenia()}" update="@form"
 								icon="fa fa-key" />
 
 							<p:menuitem value="Cerrar sesión"
@@ -95,22 +93,24 @@
 					<br />
 					<p:dataTable value="#{beanBodega.listaBodega}" var="b">
 
-						<p:column headerText="Nombre" sortBy="#{b.nombreBodega}" filterBy="#{b.nombreBodega}">
+						<p:column headerText="Nombre" sortBy="#{b.nombreBodega}"
+							filterBy="#{b.nombreBodega}">
 							<h:outputText value="#{b.nombreBodega}" />
 						</p:column>
 						<p:column headerText="Dirección" sortBy="#{b.direccionBodega}">
 							<h:outputText value="#{b.direccionBodega}" />
 						</p:column>
-						<p:column headerText="Punto de venta" sortBy="#{b.puntoVenta.nombrePtoVenta}">
+						<p:column headerText="Punto de venta"
+							sortBy="#{b.puntoVenta.nombrePtoVenta}">
 							<h:outputText value="#{b.puntoVenta.nombrePtoVenta}" />
 							<h:inputHidden value="#{b.puntoVenta.idPtoVenta}" />
 
 						</p:column>
-						<p:column headerText="Usuario" sortBy="#{b.usuario.nombreUsuario}" filterBy="#{b.usuario.nombreUsuario}">
-							<h:outputText
-								value="#{b.usuario.nombreUsuario} - #{b.usuario.apellidoUsuario}" />
-							<h:inputHidden value="#{b.usuario.idUsuario}" />
-						</p:column>
+						<!-- 						<p:column headerText="Usuario" sortBy="#{b.usuario.nombreUsuario}" filterBy="#{b.usuario.nombreUsuario}"> -->
+						<!-- 							<h:outputText -->
+						<!-- 								value="#{b.usuario.nombreUsuario} - #{b.usuario.apellidoUsuario}" /> -->
+						<!-- 							<h:inputHidden value="#{b.usuario.idUsuario}" /> -->
+						<!-- 						</p:column> -->
 						<p:column headerText="Opciones">
 							<p:commandButton icon="fa fa-edit" update=":formEditar"
 								title="Editar"
@@ -120,9 +120,15 @@
 
 							<p:commandButton update="form" icon="fa fa-trash"
 								title="Eliminar"
-								actionListener="#{beanBodega.actionListenerEliminarUsuario(b.idBodega)}">
+								actionListener="#{beanBodega.actionListenerEliminarBodega(b.idBodega)}"
+								style="background-color:red;">
 								<p:confirm header="Confirmación" message="¿Desea eliminar?"
 									icon="fa fa-info"></p:confirm>
+							</p:commandButton>
+							<p:commandButton update="form" icon="fa fa-eye"
+								style="background-color:yellow;color:blue" title="Ver elementos"
+								action="#{beanBodega.ver_productos_bodegas()}"
+								actionListener="#{beanBodega.ver_productos_bodega(b.idBodega)}">
 							</p:commandButton>
 						</p:column>
 					</p:dataTable>
@@ -156,15 +162,15 @@
 					<f:selectItems value="#{beanBodega.listaPuntoVenta}" var="r"
 						itemLabel="#{r.nombrePtoVenta}" itemValue="#{r.idPtoVenta}" />
 				</p:selectOneMenu>
-				<h:outputText value="Usuario" />
-				<p:selectOneMenu required="true"
-					requiredMessage="Seleccione el usuario"
-					value="#{beanBodega.idUser}">
-					<f:selectItem itemLabel="Seleccione" itemValue="" />
-					<f:selectItems value="#{beanBodega.listaUsuario}" var="r"
-						itemLabel="#{r.nombreUsuario} - #{r.apellidoUsuario}"
-						itemValue="#{r.idUsuario}" />
-				</p:selectOneMenu>
+				<!-- 				<h:outputText value="Usuario" /> -->
+				<!-- 				<p:selectOneMenu required="true" -->
+				<!-- 					requiredMessage="Seleccione el usuario" -->
+				<!-- 					value="#{beanBodega.idUser}"> -->
+				<!-- 					<f:selectItem itemLabel="Seleccione" itemValue="" /> -->
+				<!-- 					<f:selectItems value="#{beanBodega.listaUsuario}" var="r" -->
+				<!-- 						itemLabel="#{r.nombreUsuario} - #{r.apellidoUsuario}" -->
+				<!-- 						itemValue="#{r.idUsuario}" /> -->
+				<!-- 				</p:selectOneMenu> -->
 
 
 			</p:panelGrid>
@@ -199,15 +205,15 @@
 					<f:selectItems value="#{beanBodega.listaPuntoVenta}" var="r"
 						itemLabel="#{r.nombrePtoVenta}" itemValue="#{r.idPtoVenta}" />
 				</p:selectOneMenu>
-				<h:outputText value="Usuario" />
-				<p:selectOneMenu required="true"
-					requiredMessage="Seleccione el usuario"
-					value="#{beanBodega.idUser}">
-					<f:selectItem itemLabel="Seleccione" itemValue="" />
-					<f:selectItems value="#{beanBodega.listaUsuario}" var="r"
-						itemLabel="#{r.nombreUsuario} - #{r.apellidoUsuario}"
-						itemValue="#{r.idUsuario}" />
-				</p:selectOneMenu>
+				<!-- 				<h:outputText value="Usuario" /> -->
+				<!-- 				<p:selectOneMenu required="true" -->
+				<!-- 					requiredMessage="Seleccione el usuario" -->
+				<!-- 					value="#{beanBodega.idUser}"> -->
+				<!-- 					<f:selectItem itemLabel="Seleccione" itemValue="" /> -->
+				<!-- 					<f:selectItems value="#{beanBodega.listaUsuario}" var="r" -->
+				<!-- 						itemLabel="#{r.nombreUsuario} - #{r.apellidoUsuario}" -->
+				<!-- 						itemValue="#{r.idUsuario}" /> -->
+				<!-- 				</p:selectOneMenu> -->
 			</p:panelGrid>
 			<br />
 			<p:commandButton value="Actualizar" update="form"

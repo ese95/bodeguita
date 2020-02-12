@@ -10,9 +10,11 @@
 
 </f:metadata>
 
-<h:head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no" /></h:head>
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+</h:head>
 <body onload="#{beanUsuario.inicializar()}">
 	<p:growl>
 		<p:autoUpdate></p:autoUpdate>
@@ -70,7 +72,9 @@
 							<p:menuitem value="Categoría"
 								action="#{beanUsuario.irCategoria()}" update="@form"
 								icon="fa fa-clipboard" />
-
+							<p:menuitem value="Movimientos"
+								action="#{beanUsuario.irMovimientos()}" update="@form"
+								icon="fa fa-compress" />
 						</p:submenu>
 						<p:separator />
 						<p:submenu label="Bitácora" icon="fa fa-table">
@@ -82,7 +86,7 @@
 						<p:separator />
 						<p:submenu label="Opciones" icon="fa fa-cog">
 							<p:menuitem value="Cambiar contraseña"
-								action="#{beanUsuario.irBitacora()}" update="@form"
+								action="#{beanUsuario.irCambiarContrasenia()}" update="@form"
 								icon="fa fa-key" />
 
 							<p:menuitem value="Cerrar sesión"

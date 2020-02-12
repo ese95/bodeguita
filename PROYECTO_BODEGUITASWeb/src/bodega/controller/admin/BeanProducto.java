@@ -17,8 +17,11 @@ import org.primefaces.model.UploadedFile;
 
 import bodega.model.admin.ManagerProducto;
 import bodega.model.admin.ManagerMedida;
+import bodega.model.admin.ManagerBitacora;
+import bodega.model.admin.ManagerBodega;
 import bodega.model.admin.ManagerCategoria;
 import bodega.model.entities.Producto;
+import bodega.model.entities.Bodega;
 import bodega.model.entities.Categoria;
 import bodega.model.entities.Medida;
 import sun.misc.BASE64Encoder;
@@ -34,6 +37,8 @@ public class BeanProducto implements Serializable {
 	private List<Producto> listaProducto;
 	private List<Medida> listaMedida;
 	private List<Categoria> listaCategoria;
+	private List<Bodega>listaBodega;
+	private Integer idBodega;
 	private Integer idCategoria;
 	private Integer idMedida;
 	private UploadedFile uploadedFile;
@@ -44,6 +49,13 @@ public class BeanProducto implements Serializable {
 	private ManagerCategoria managerCat;
 	@EJB
 	private ManagerMedida managerMed;
+	
+	@EJB
+	private ManagerBitacora managerbit;
+	
+	@EJB
+	private ManagerBodega managerBodega;
+	
 	private Producto prod;
 
 	@PostConstruct
@@ -52,6 +64,7 @@ public class BeanProducto implements Serializable {
 			listaProducto = managerProd.findAllProductos();
 			listaCategoria = managerCat.findAllCategorias();
 			listaMedida = managerMed.findAllMedidas();
+			listaBodega=managerBodega.findAllBodega();
 		} catch (Exception e) {
 			JSFUtil.crearMensajeError(e.getMessage());
 		}
@@ -63,10 +76,13 @@ public class BeanProducto implements Serializable {
 			prod = new Producto();
 			Medida med = managerMed.findByIdMedida(p.getMedida().getIdMedida());
 			Categoria cat = managerCat.findByIdCategoria(p.getCategoria().getIdCategoria());
+			Bodega bod=managerBodega.findByIdBodega(p.getBodega().getIdBodega());
 			prod.setCantidadStockProducto(p.getCantidadStockProducto());
 			prod.setCaracteristicasProducto(p.getCaracteristicasProducto());
 			idCategoria = p.getCategoria().getIdCategoria();
 			idMedida = p.getMedida().getIdMedida();
+			idBodega=p.getBodega().getIdBodega();
+			System.out.println("idbodega "+idBodega);
 			prod.setIdProducto(p.getIdProducto());
 			prod.setCategoria(cat);
 			prod.setCostoProducto(p.getCostoProducto());
@@ -76,7 +92,8 @@ public class BeanProducto implements Serializable {
 			prod.setMedida(p.getMedida());
 			prod.setNombreProducto(p.getNombreProducto());
 			prod.setPrecioBaseProducto(p.getPrecioBaseProducto());
-
+			prod.setBodega(p.getBodega());
+			System.out.println("bodega "+prod.getBodega().getNombreBodega());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -116,11 +133,14 @@ public class BeanProducto implements Serializable {
 					p.setEstadoProducto(prod.getEstadoProducto());
 					p.setImagenProducto(cod64);
 					p.setCategoria(managerCat.findByIdCategoria(idCategoria));
+					p.setBodega(managerBodega.findByIdBodega(idBodega));
+					System.out.println("boddd"+p.getBodega().getNombreBodega());
 					p.setMedida(managerMed.findByIdMedida(idMedida));
 					p.setNombreProducto(prod.getNombreProducto());
 					p.setPrecioBaseProducto(prod.getPrecioBaseProducto());
 
 					managerProd.actualizarProducto(p);
+					managerbit.crearEvento("actionListenerActualizarProducto()", "Actualiza un producto ");
 					listaProducto = managerProd.findAllProductos();
 
 					JSFUtil.crearMensajeInfo("Actualizado con éxito");
@@ -148,6 +168,7 @@ public class BeanProducto implements Serializable {
 		prod.setMedida(null);
 		prod.setNombreProducto("");
 		prod.setPrecioBaseProducto(null);
+		prod.setBodega(null);
 	}
 
 	public void actionListenerInsertarProducto() {
@@ -184,12 +205,14 @@ public class BeanProducto implements Serializable {
 					p.setImagenProducto(cod64);
 					p.setCategoria(managerCat.findByIdCategoria(idCategoria));
 					p.setMedida(managerMed.findByIdMedida(idMedida));
+					p.setBodega(managerBodega.findByIdBodega(idBodega));
 					p.setNombreProducto(prod.getNombreProducto());
 					p.setPrecioBaseProducto(prod.getPrecioBaseProducto());
 
 					managerProd.insertarUsuario(p);
 					listaProducto = managerProd.findAllProductos();
 					limpiarProducto();
+					managerbit.crearEvento("actionListenerInsertarProducto()", "Inserta un producto ");
 					/*
 					 * Genero gen=managerGenero.findByIdGeneros(idGenero); u.setGenero(gen); Rol
 					 * rol=managerRol.findByIdRol(idRol); u.setImagenUsuario(cod64);
@@ -236,6 +259,7 @@ public class BeanProducto implements Serializable {
 
 			managerProd.eliminarProducto(id);
 			listaProducto = managerProd.findAllProductos();
+			managerbit.crearEvento("actionListenerEliminarProducto()", "Elimina un producto ");
 			JSFUtil.crearMensajeInfo("Su producto ha sido eliminado");
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -300,5 +324,22 @@ public class BeanProducto implements Serializable {
 	public void setProd(Producto prod) {
 		this.prod = prod;
 	}
+
+	public List<Bodega> getListaBodega() {
+		return listaBodega;
+	}
+
+	public void setListaBodega(List<Bodega> listaBodega) {
+		this.listaBodega = listaBodega;
+	}
+
+	public Integer getIdBodega() {
+		return idBodega;
+	}
+
+	public void setIdBodega(Integer idBodega) {
+		this.idBodega = idBodega;
+	}
+	
 
 }

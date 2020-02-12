@@ -36,7 +36,7 @@
 					<p:panelMenu>
 						<p:submenu label="Usuario">
 							<p:menuitem value="Usuario" action="#{beanUsuario.irUsuario()}"
-								update="@form" icon="fa fa-user" />			
+								update="@form" icon="fa fa-user" />
 							<p:menuitem value="Usuario - Rol"
 								action="#{beanUsuario.irUsuarioRol()}" update="@form"
 								icon="fa fa-book" />
@@ -60,19 +60,16 @@
 							<p:menuitem value="Categoría"
 								action="#{beanUsuario.irCategoria()}" update="@form"
 								icon="fa fa-clipboard" />
-
+							<p:menuitem value="Movimientos"
+								action="#{beanUsuario.irMovimientos()}" update="@form"
+								icon="fa fa-compress" />
 						</p:submenu>
 						<p:separator />
-						<p:submenu label="Bitácora" icon="fa fa-table">
-							<p:menuitem value="Bitácora" action="#{beanUsuario.irBitacora()}"
-								update="@form" icon="fa fa-table" />
-
-						</p:submenu>
-
+						
 						<p:separator />
 						<p:submenu label="Opciones" icon="fa fa-cog">
 							<p:menuitem value="Cambiar contraseña"
-								action="#{beanUsuario.irBitacora()}" update="@form"
+								action="#{beanUsuario.irCambiarContrasenia()}" update="@form"
 								icon="fa fa-key" />
 
 							<p:menuitem value="Cerrar sesión"
@@ -99,7 +96,8 @@
 							<h:graphicImage value="data:image/jpg;base64,#{p.imagenProducto}"
 								width="90" />
 						</p:column>
-						<p:column headerText="Nombre " sortBy="#{p.nombreProducto}" filterBy="#{p.nombreProducto}">
+						<p:column headerText="Nombre " sortBy="#{p.nombreProducto}"
+							filterBy="#{p.nombreProducto}">
 							<h:outputText value="#{p.nombreProducto}" />
 						</p:column>
 						<p:column headerText="Descripción">
@@ -115,18 +113,21 @@
 
 						</p:column>
 
-						<p:column headerText="Categoría" sortBy="#{p.categoria.nombreCategoria}">
+						<p:column headerText="Categoría"
+							sortBy="#{p.categoria.nombreCategoria}">
 							<h:outputText value="#{p.categoria.nombreCategoria}" />
 							<h:inputHidden value="#{p.categoria.idCategoria}" />
 						</p:column>
-						<p:column headerText="Precio base" sortBy="#{p.precioBaseProducto}">
+						<p:column headerText="Precio base"
+							sortBy="#{p.precioBaseProducto}">
 							<h:outputText value="#{p.precioBaseProducto}" />
 						</p:column>
 
 						<p:column headerText="Costo de venta" sortBy="#{p.costoProducto}">
 							<h:outputText value="#{p.costoProducto}" />
 						</p:column>
-						<p:column headerText="Cantidad Stock" sortBy="#{p.cantidadStockProducto}">
+						<p:column headerText="Cantidad Stock"
+							sortBy="#{p.cantidadStockProducto}">
 							<h:outputText value="#{p.cantidadStockProducto}" />
 						</p:column>
 						<p:column headerText="Estado " sortBy="#{p.estadoProducto}">

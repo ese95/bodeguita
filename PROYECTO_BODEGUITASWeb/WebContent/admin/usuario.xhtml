@@ -39,7 +39,7 @@
 					<p:panelMenu>
 						<p:submenu label="Usuario">
 							<p:menuitem value="Usuario" action="#{beanUsuario.irUsuario()}"
-								update="@form" icon="fa fa-user" />			
+								update="@form" icon="fa fa-user" />
 							<p:menuitem value="Usuario - Rol"
 								action="#{beanUsuario.irUsuarioRol()}" update="@form"
 								icon="fa fa-book" />
@@ -63,19 +63,16 @@
 							<p:menuitem value="Categoría"
 								action="#{beanUsuario.irCategoria()}" update="@form"
 								icon="fa fa-clipboard" />
-
+							<p:menuitem value="Movimientos"
+								action="#{beanUsuario.irMovimientos()}" update="@form"
+								icon="fa fa-compress" />
 						</p:submenu>
 						<p:separator />
-						<p:submenu label="Bitácora" icon="fa fa-table">
-							<p:menuitem value="Bitácora" action="#{beanUsuario.irBitacora()}"
-								update="@form" icon="fa fa-table" />
-
-						</p:submenu>
 
 						<p:separator />
 						<p:submenu label="Opciones" icon="fa fa-cog">
 							<p:menuitem value="Cambiar contraseña"
-								action="#{beanUsuario.irBitacora()}" update="@form"
+								action="#{beanUsuario.irCambiarContrasenia()}" update="@form"
 								icon="fa fa-key" />
 
 							<p:menuitem value="Cerrar sesión"
@@ -104,16 +101,19 @@
 							<h:graphicImage value="data:image/jpg;base64,#{u.imagenUsuario}"
 								width="90" />
 						</p:column>
-						<p:column headerText="Nombre " filterBy="#{u.nombreUsuario}" sortBy="#{u.nombreUsuario}">
+						<p:column headerText="Nombre " filterBy="#{u.nombreUsuario}"
+							sortBy="#{u.nombreUsuario}">
 							<h:outputText value="#{u.nombreUsuario}" />
 						</p:column>
-						<p:column headerText="Apellido" filterBy="#{u.apellidoUsuario}" sortBy="#{u.apellidoUsuario}">
+						<p:column headerText="Apellido" filterBy="#{u.apellidoUsuario}"
+							sortBy="#{u.apellidoUsuario}">
 							<h:outputText value="#{u.apellidoUsuario}" />
 						</p:column>
 						<p:column headerText="Cédula" filterBy="#{u.cedulaUsuario}">
 							<h:outputText value="#{u.cedulaUsuario}" />
 						</p:column>
-						<p:column headerText="Correo" sortBy="#{u.correoUsuario}" filterBy="#{u.correoUsuario}">
+						<p:column headerText="Correo" sortBy="#{u.correoUsuario}"
+							filterBy="#{u.correoUsuario}">
 							<h:outputText value="#{u.correoUsuario}" />
 						</p:column>
 
@@ -127,7 +127,8 @@
 						<p:column headerText="Teléfono">
 							<h:outputText value="#{u.telefonoUsuario}" />
 						</p:column>
-						<p:column headerText="Fecha Nacimiento" sortBy="#{u.fechaNacUsuario}">
+						<p:column headerText="Fecha Nacimiento"
+							sortBy="#{u.fechaNacUsuario}">
 							<h:outputText value="#{u.fechaNacUsuario}" />
 						</p:column>
 						<p:column headerText="Opciones">

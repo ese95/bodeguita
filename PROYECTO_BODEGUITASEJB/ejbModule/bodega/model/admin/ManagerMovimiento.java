@@ -53,6 +53,8 @@ private ManagerDAO managerDAO;
 		return null;	
     }
     
+   
+    
 public TipoDocumento findByIdTipoDocumento(Integer id) {
     	
     	try {

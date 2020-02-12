@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -17,13 +18,22 @@ import javax.enterprise.context.SessionScoped;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.primefaces.model.UploadedFile;
 
 import bodega.controller.login.BeanLogin;
+import bodega.model.admin.ManagerBitacora;
 import bodega.model.admin.ManagerGenero;
 import bodega.model.admin.ManagerRol;
 import bodega.model.admin.ManagerUsuario;
+import bodega.model.entities.Bitacora;
 import bodega.model.entities.Genero;
 import bodega.model.entities.Rol;
 import bodega.model.entities.Usuario;
@@ -50,12 +60,38 @@ public class BeanUsuario implements Serializable {
 	private ManagerGenero managerGenero;
 	@EJB
 	private ManagerRol managerRol;
+	@EJB
+	private ManagerBitacora managerbit;
 	private Usuario user;
-	
+	private List<Bitacora>listaBitacora;
 
 	@Inject
 	BeanLogin login;
 
+	/**
+	 * 
+	 * Atributos para el mail
+	 */
+	private String direccionDe;
+	private String mailServerHost;
+	private String usuario;
+	private String clave;
+	private String mensajeInicialAsunto;
+
+	/**
+	 * 
+	 * atributos mail xD
+	 */
+	private String direccionPara;
+	private String asunto;
+	private String contenido;
+	private String nota;
+
+	
+	//contraseña
+	private String claveAnterior;
+	private String claveNueva;
+	
 	@PostConstruct
 	public void inicializar() {
 		try {
@@ -96,6 +132,21 @@ public class BeanUsuario implements Serializable {
 		}
 	}
 
+	public void actionListenerActualizarClave() throws Exception {
+		if (claveAnterior.equals(login.getPassword())) {
+			login.setPassword(claveNueva);
+			Usuario us=managerUser.findByIdUsuario(login.getIdUsuario());
+			us.setClaveUsuario(claveNueva);
+			managerUser.actualizarUsuario(us);
+			System.out.println("paso algo");
+			
+			JSFUtil.crearMensajeInfo("Su contraseña se ha actualizado correctamente");
+		}else {
+			JSFUtil.crearMensajeError("Contraseñas no coinciden, ingrese de nuevo");
+		}
+		
+	}
+	
 	public void actionListenerActualizarUsuario() {
 		try {
 			BufferedImage image = null;
@@ -147,7 +198,7 @@ public class BeanUsuario implements Serializable {
 							u.setTelefonoUsuario(user.getTelefonoUsuario());
 							managerUser.actualizarUsuario(u);
 							listaUser = managerUser.findAllUsuarios();
-
+							managerbit.crearEvento("actionListenerActualizarUsuario()", "Actualiza un usuario ");
 							JSFUtil.crearMensajeInfo("Actualizado con éxito");
 						} else {
 							JSFUtil.crearMensajeError("El usuario debe ser mayor de edad");
@@ -233,7 +284,7 @@ public class BeanUsuario implements Serializable {
 							managerUser.insertarUsuario(u);
 							listaUser = managerUser.findAllUsuarios();
 							limpiarUsuario();
-
+							managerbit.crearEvento("actionListenerInsertarUsuario()", "Inserta un usuario ");
 							JSFUtil.crearMensajeInfo("Insertado con éxito");
 						} else {
 							JSFUtil.crearMensajeError("El usuario debe ser mayor de edad");
@@ -272,12 +323,13 @@ public class BeanUsuario implements Serializable {
 
 	public void actionListenerEliminarUsuario(Integer id) {
 		try {
-			if (login.getLoginDTO().getIdUsuario()==id) {
+			if (login.getLoginDTO().getIdUsuario() == id) {
 				JSFUtil.crearMensajeError("No debe eliminar el usuario en el que ha iniciado sesión");
-			}else {
-			managerUser.eliminarUsuario(id);
-			listaUser = managerUser.findAllUsuarios();
-			JSFUtil.crearMensajeInfo("Su usuario ha sido eliminado");
+			} else {
+				managerUser.eliminarUsuario(id);
+				listaUser = managerUser.findAllUsuarios();
+				JSFUtil.crearMensajeInfo("Su usuario ha sido eliminado");
+				managerbit.crearEvento("actionListenerEliminarUsuario()", "Inserta un usuario ");
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -289,12 +341,13 @@ public class BeanUsuario implements Serializable {
 
 	public void actionListenerEliminarUsuarioADMIN(Integer id) {
 		try {
-			if (login.getLoginDTO().getIdUsuario()==id) {
+			if (login.getLoginDTO().getIdUsuario() == id) {
 				JSFUtil.crearMensajeError("No debe eliminar el usuario en el que ha iniciado sesión");
-			}else {
-			managerUser.eliminarUsuario(id);
-			listaUser = managerUser.findAllUsuarios();
-			JSFUtil.crearMensajeInfo("Su usuario ha sido eliminado");
+			} else {
+				managerUser.eliminarUsuario(id);
+				listaUser = managerUser.findAllUsuarios();
+				JSFUtil.crearMensajeInfo("Su usuario ha sido eliminado");
+				managerbit.crearEvento("actionListenerEliminarUsuarioADMIN()", "Inserta un usuario del Admin");
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -378,20 +431,30 @@ public class BeanUsuario implements Serializable {
 		}
 	}
 
+
+
 	public String irHome() {
 		return "home";
 	}
 
 	public String irBitacora() {
-		return "bitacora";
+		
+			return "bitacora";
+		
 	}
 
 	public String irUsuario() {
 		return "usuario";
 	}
-
+	public String irCambiarContrasenia() {
+		return "cambiar_contrasenia";
+	}
 	public String irRol() {
 		return "rol";
+	}
+
+	public String irMovimientos() {
+		return "movimientos";
 	}
 
 	public String irPuntoVenta() {
@@ -477,5 +540,94 @@ public class BeanUsuario implements Serializable {
 	public void setUploadedFile(UploadedFile uploadedFile) {
 		this.uploadedFile = uploadedFile;
 	}
+
+	public String getDireccionDe() {
+		return direccionDe;
+	}
+
+	public void setDireccionDe(String direccionDe) {
+		this.direccionDe = direccionDe;
+	}
+
+	public String getMailServerHost() {
+		return mailServerHost;
+	}
+
+	public void setMailServerHost(String mailServerHost) {
+		this.mailServerHost = mailServerHost;
+	}
+
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+	public String getClave() {
+		return clave;
+	}
+
+	public void setClave(String clave) {
+		this.clave = clave;
+	}
+
+	public String getDireccionPara() {
+		return direccionPara;
+	}
+
+	public void setDireccionPara(String direccionPara) {
+		this.direccionPara = direccionPara;
+	}
+
+	public String getAsunto() {
+		return asunto;
+	}
+
+	public void setAsunto(String asunto) {
+		this.asunto = asunto;
+	}
+
+	public String getContenido() {
+		return contenido;
+	}
+
+	public void setContenido(String contenido) {
+		this.contenido = contenido;
+	}
+
+	public String getNota() {
+		return nota;
+	}
+
+	public void setNota(String nota) {
+		this.nota = nota;
+	}
+
+	public List<Bitacora> getListaBitacora() {
+		return listaBitacora;
+	}
+
+	public void setListaBitacora(List<Bitacora> listaBitacora) {
+		this.listaBitacora = listaBitacora;
+	}
+
+	public String getClaveAnterior() {
+		return claveAnterior;
+	}
+
+	public void setClaveAnterior(String claveAnterior) {
+		this.claveAnterior = claveAnterior;
+	}
+
+	public String getClaveNueva() {
+		return claveNueva;
+	}
+
+	public void setClaveNueva(String claveNueva) {
+		this.claveNueva = claveNueva;
+	}
+	
 
 }

@@ -35,7 +35,7 @@
 					<p:panelMenu>
 						<p:submenu label="Usuario">
 							<p:menuitem value="Usuario" action="#{beanUsuario.irUsuario()}"
-								update="@form" icon="fa fa-user" />			
+								update="@form" icon="fa fa-user" />
 							<p:menuitem value="Usuario - Rol"
 								action="#{beanUsuario.irUsuarioRol()}" update="@form"
 								icon="fa fa-book" />
@@ -59,19 +59,16 @@
 							<p:menuitem value="Categoría"
 								action="#{beanUsuario.irCategoria()}" update="@form"
 								icon="fa fa-clipboard" />
-
+							<p:menuitem value="Movimientos"
+								action="#{beanUsuario.irMovimientos()}" update="@form"
+								icon="fa fa-compress" />
 						</p:submenu>
 						<p:separator />
-						<p:submenu label="Bitácora" icon="fa fa-table">
-							<p:menuitem value="Bitácora" action="#{beanUsuario.irBitacora()}"
-								update="@form" icon="fa fa-table" />
-
-						</p:submenu>
-
+						
 						<p:separator />
 						<p:submenu label="Opciones" icon="fa fa-cog">
 							<p:menuitem value="Cambiar contraseña"
-								action="#{beanUsuario.irBitacora()}" update="@form"
+								action="#{beanUsuario.irCambiarContrasenia()}" update="@form"
 								icon="fa fa-key" />
 
 							<p:menuitem value="Cerrar sesión"
@@ -97,11 +94,15 @@
 					<p:dataTable reflow="true"
 						value="#{beanUsuarioRol.listaUsuarioRolADM}" var="ur">
 
-						<p:column headerText="Cédula" filterBy="#{ur.usuario.cedulaUsuario}" sortBy="#{ur.usuario.cedulaUsuario}">
+						<p:column headerText="Cédula"
+							filterBy="#{ur.usuario.cedulaUsuario}"
+							sortBy="#{ur.usuario.cedulaUsuario}">
 							<h:outputText value="#{ur.usuario.cedulaUsuario} " />
 
 						</p:column>
-						<p:column headerText="Correo" filterBy="#{ur.usuario.correoUsuario}" sortBy="#{ur.usuario.correoUsuario}">
+						<p:column headerText="Correo"
+							filterBy="#{ur.usuario.correoUsuario}"
+							sortBy="#{ur.usuario.correoUsuario}">
 							<h:outputText value="#{ur.usuario.correoUsuario} " />
 
 						</p:column>
@@ -117,7 +118,7 @@
 						<p:column headerText="Rol">
 							<h:outputText value="#{ur.rol.tipoRol}" />
 							<h:inputHidden value="#{ur.rol.idRol}" />
-<!-- 								<h:inputHidden value="#{ur.rol.idRol}" /> -->
+							<!-- 								<h:inputHidden value="#{ur.rol.idRol}" /> -->
 						</p:column>
 						<p:column headerText="Opciones">
 							<p:commandButton icon="fa fa-edit" update=":formEditar"
@@ -183,9 +184,10 @@
 
 			<p:panelGrid columns="2">
 				<h:outputText value="Usuario" />
-			
-				<h:outputLabel value="#{beanUsuarioRol.uRol.usuario.nombreUsuario} #{beanUsuarioRol.uRol.usuario.apellidoUsuario}" />
-	
+
+				<h:outputLabel
+					value="#{beanUsuarioRol.uRol.usuario.nombreUsuario} #{beanUsuarioRol.uRol.usuario.apellidoUsuario}" />
+
 				<h:outputText value="Rol" />
 				<p:selectOneMenu required="true" requiredMessage="Seleccione el rol"
 					value="#{beanUsuarioRol.idRol}">

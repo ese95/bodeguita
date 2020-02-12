@@ -2,6 +2,7 @@ package bodega.model.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -19,6 +20,10 @@ public class UsuarioRol implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="USUARIO_ROL_IDUSUARIOROL_GENERATOR")
 	@Column(name="id_usuario_rol", unique=true, nullable=false)
 	private Integer idUsuarioRol;
+
+	//bi-directional many-to-one association to PuntoVenta
+	@OneToMany(mappedBy="usuarioRol")
+	private List<PuntoVenta> puntoVentas;
 
 	//bi-directional many-to-one association to Rol
 	@ManyToOne
@@ -39,6 +44,28 @@ public class UsuarioRol implements Serializable {
 
 	public void setIdUsuarioRol(Integer idUsuarioRol) {
 		this.idUsuarioRol = idUsuarioRol;
+	}
+
+	public List<PuntoVenta> getPuntoVentas() {
+		return this.puntoVentas;
+	}
+
+	public void setPuntoVentas(List<PuntoVenta> puntoVentas) {
+		this.puntoVentas = puntoVentas;
+	}
+
+	public PuntoVenta addPuntoVenta(PuntoVenta puntoVenta) {
+		getPuntoVentas().add(puntoVenta);
+		puntoVenta.setUsuarioRol(this);
+
+		return puntoVenta;
+	}
+
+	public PuntoVenta removePuntoVenta(PuntoVenta puntoVenta) {
+		getPuntoVentas().remove(puntoVenta);
+		puntoVenta.setUsuarioRol(null);
+
+		return puntoVenta;
 	}
 
 	public Rol getRol() {

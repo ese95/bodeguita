@@ -50,10 +50,6 @@ public class Usuario implements Serializable {
 	@Column(name="telefono_usuario", length=15)
 	private String telefonoUsuario;
 
-	//bi-directional many-to-one association to Bodega
-	@OneToMany(mappedBy="usuario")
-	private List<Bodega> bodegas;
-
 	//bi-directional many-to-one association to Genero
 	@ManyToOne
 	@JoinColumn(name="id_genero")
@@ -144,28 +140,6 @@ public class Usuario implements Serializable {
 
 	public void setTelefonoUsuario(String telefonoUsuario) {
 		this.telefonoUsuario = telefonoUsuario;
-	}
-
-	public List<Bodega> getBodegas() {
-		return this.bodegas;
-	}
-
-	public void setBodegas(List<Bodega> bodegas) {
-		this.bodegas = bodegas;
-	}
-
-	public Bodega addBodega(Bodega bodega) {
-		getBodegas().add(bodega);
-		bodega.setUsuario(this);
-
-		return bodega;
-	}
-
-	public Bodega removeBodega(Bodega bodega) {
-		getBodegas().remove(bodega);
-		bodega.setUsuario(null);
-
-		return bodega;
 	}
 
 	public Genero getGenero() {
